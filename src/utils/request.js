@@ -48,10 +48,64 @@ const errorHandler = error => {
 /**
  * 配置request请求时的默认参数
  */
-
 const request = extend({
   errorHandler,
   // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+// request拦截器, 改变url 或 options.
+request.interceptors.request.use(async (url, options) => {
+  if (options.headers === undefined) {
+
+  } else if (options.headers) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'authorization': localStorage.getItem("access_token"),
+      'refresh_token': localStorage.getItem("refresh_token"),
+    };
+    return (
+      {
+        url: url,
+        options: { ...options, headers: headers },
+      }
+    );
+  } else {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'authorization': localStorage.getItem("access_token"),
+    };
+    return (
+      {
+        url: url,
+        options: { ...options, headers: headers },
+      }
+    );
+  }
+  return (
+    {
+      url: url,
+      options: { ...options },
+    }
+  );
+})
+
+// response拦截器, 处理response
+request.interceptors.response.use(async response => {
+  const data = await response.clone().json()
+  if (data.code === 0) {
+
+    return response;
+  } else {
+    notification.error({
+      description: data.msg || '您的网络发生异常，无法连接服务器',
+      message: '错误',
+    });
+  }
+
+  return response
+});
+
 export default request;

@@ -5,6 +5,7 @@ export default {
   'menu.admin': '管理页',
   'menu.admin.sub-page': '二级管理页',
   'menu.login': '登录',
+  'menu.loginA': '登录',
   'menu.register': '注册',
   'menu.register.result': '注册结果',
   'menu.dashboard': 'Dashboard',
@@ -49,4 +50,15 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
+  'menu.主页': '主页',
+  'menu.组织管理': '组织管理',
+  'menu.组织管理.角色管理': '角色管理',
+  'menu.组织管理.菜单权限管理': '菜单权限管理',
+  'menu.组织管理.部门管理': '部门管理',
+  'menu.组织管理.用户管理': '用户管理',
+  'menu.系统管理': '系统管理',
+  'menu.系统管理.日志管理': '日志管理',
+  'menu.系统管理.接口管理': '接口管理',
+  'menu.系统管理.SQL监控': 'SQL监控',
+
 };

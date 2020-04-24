@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
+import { fakeAccountLogin, loginOut } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
@@ -11,13 +11,16 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
+
       const response = yield call(fakeAccountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
-
-      if (response.status === 'ok') {
+      if (response.code === 0) {
+        //存token
+        localStorage.setItem("access_token", response.data.accessToken);
+        localStorage.setItem("refresh_token", response.data.refreshToken);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -41,9 +44,14 @@ const Model = {
       }
     },
 
-    logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+    *logout({ }, { call }) {
 
+      yield call(loginOut);
+      //清除token
+      localStorage.removeItem("access_token")
+      localStorage.removeItem("refresh_token")
+
+      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
           pathname: '/user/login',
@@ -51,13 +59,14 @@ const Model = {
             redirect: window.location.href,
           }),
         });
+
       }
     },
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+      setAuthority("超级管理员");
+      return { ...state, status: payload.data.code, type: payload.data.msg };
     },
   },
 };

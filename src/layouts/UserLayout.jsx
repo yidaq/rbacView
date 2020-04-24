@@ -5,6 +5,7 @@ import React from 'react';
 import SelectLang from '@/components/SelectLang';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
+import { GithubOutlined } from '@ant-design/icons';
 
 const UserLayout = props => {
   const {
@@ -43,14 +44,34 @@ const UserLayout = props => {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
+                <span className={styles.title}>Safe Manage</span>
               </Link>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>权限管理系统 后台管理</div>
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter
+          copyright="权限管理系统"
+          links={[
+            {
+              key: 'Safe',
+              title: 'Safe Manage',
+              blankTarget: true,
+            },
+            {
+              key: 'github',
+              title: <GithubOutlined />,
+              href: 'https://github.com/yidaq/',
+              blankTarget: true,
+            },
+            {
+              key: 'Manage',
+              title: 'Safe Manage',
+              blankTarget: true,
+            },
+          ]}
+        />
       </div>
     </HelmetProvider>
   );

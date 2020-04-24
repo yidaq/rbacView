@@ -35,26 +35,25 @@ const menuDataRender = menuList =>
     return Authorized.check(item.authority, localItem, null);
   });
 
+
 const defaultFooterDom = (
   <DefaultFooter
-    copyright="2019 蚂蚁金服体验技术部出品"
+    copyright="权限管理系统"
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
+        key: 'Safe_Manage',
+        title: 'Safe Manage',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
+        href: 'https://github.com/yidaq/',
         blankTarget: true,
       },
       {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
+        key: 'Safe+Manage',
+        title: 'Safe Manage',
         blankTarget: true,
       },
     ]}
@@ -62,6 +61,7 @@ const defaultFooterDom = (
 );
 
 const BasicLayout = props => {
+
   const {
     dispatch,
     children,
@@ -79,6 +79,9 @@ const BasicLayout = props => {
       dispatch({
         type: 'user/fetchCurrent',
       });
+      dispatch({
+        type: 'routes/getRoutes'
+      })
     }
   }, []);
   /**
@@ -94,10 +97,12 @@ const BasicLayout = props => {
     }
   }; // get children authority
 
-  const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
+  const authorized = getAuthorityFromRouter(props.routes.routeList, location.pathname || '/') || {
     authority: undefined,
   };
+
   const { formatMessage } = useIntl();
+  console.log()
   return (
     <ProLayout
       logo={logo}
@@ -130,23 +135,24 @@ const BasicLayout = props => {
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
         ) : (
-          <span>{route.breadcrumbName}</span>
-        );
+            <span>{route.breadcrumbName}</span>
+          );
       }}
       footerRender={() => defaultFooterDom}
-      menuDataRender={menuDataRender}
+      menuDataRender={() => props.routes.routeList}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
-      <Authorized authority={authorized.authority} noMatch={noMatch}>
+      <Authorized authority={authorized.authority == '' ? undefined : authorized.authority} noMatch={noMatch}>
         {children}
       </Authorized>
     </ProLayout>
   );
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({ global, settings, routes }) => ({
   collapsed: global.collapsed,
   settings,
+  routes,
 }))(BasicLayout);
