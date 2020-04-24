@@ -35,7 +35,6 @@ const menuDataRender = menuList =>
     return Authorized.check(item.authority, localItem, null);
   });
 
-
 const defaultFooterDom = (
   <DefaultFooter
     copyright="权限管理系统"
@@ -97,12 +96,14 @@ const BasicLayout = props => {
     }
   }; // get children authority
 
-  const authorized = getAuthorityFromRouter(props.routes.routeList, location.pathname || '/') || {
+  const authorized = getAuthorityFromRouter(props.route.routers, location.pathname || '/') || {
     authority: undefined,
   };
 
   const { formatMessage } = useIntl();
-  console.log()
+
+  console.log(props.routes.routeList)
+
   return (
     <ProLayout
       logo={logo}
@@ -139,7 +140,7 @@ const BasicLayout = props => {
           );
       }}
       footerRender={() => defaultFooterDom}
-      menuDataRender={() => props.routes.routeList}
+      menuDataRender={menuDataRender}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}

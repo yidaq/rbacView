@@ -60,5 +60,5 @@ export default {
   'menu.系统管理.日志管理': '日志管理',
   'menu.系统管理.接口管理': '接口管理',
   'menu.系统管理.SQL监控': 'SQL监控',
-
+  'menu.userList': '用户管理',
 };

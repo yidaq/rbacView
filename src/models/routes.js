@@ -10,6 +10,7 @@ const routeModel = {
     effects: {
         *getRoutes(_, { call, put }) {
             const response = yield call(getRouters);
+
             yield put({
                 type: 'saveRouteList',
                 payload: response,
