@@ -105,9 +105,7 @@ const BasicLayout = props => {
   //   authority: undefined,
   // };
   //获取权限角色
-  const authorized = getRouteAuthority(location.pathname || '/', props.routes.routeList) || {
-    authority: undefined,
-  };
+  const authorized = getRouteAuthority(location.pathname || '/', props.routes.routeList)
 
   const { formatMessage } = useIntl();
 

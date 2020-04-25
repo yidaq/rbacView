@@ -51,7 +51,6 @@ export default defineConfig({
             {
               path: '/welcome',
               name: 'welcome',
-              icon: 'smile',
               component: './Welcome',
             },
             {
@@ -62,7 +61,6 @@ export default defineConfig({
                 {
                   path: '/org/user',
                   name: 'org-user',
-                  icon: 'smile',
                   component: './user/userList',
                 },
                 {
@@ -73,13 +71,11 @@ export default defineConfig({
             {
               path: '/admin',
               name: 'admin',
-              icon: 'crown',
               component: './Admin',
               routes: [
                 {
                   path: '/admin/sub-page',
                   name: 'sub-page',
-                  icon: 'smile',
                   component: './Welcome',
                 },
               ],
