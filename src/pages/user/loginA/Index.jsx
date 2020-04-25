@@ -30,7 +30,7 @@ function Index(props) {
     return (
         <div className={styles.main}>
             {message && (
-                <LoginMessage content="账户或密码错误（admin/ant.design）" />
+                <LoginMessage content="账户或密码错误 " />
             )}
             <Form
                 name="normal_login"
