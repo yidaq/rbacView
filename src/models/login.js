@@ -48,9 +48,7 @@ const Model = {
 
       yield call(loginOut);
       //清除token
-      localStorage.removeItem("access_token")
-      localStorage.removeItem("refresh_token")
-
+      localStorage.clear()
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
@@ -65,7 +63,7 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority("超级管理员");
+      setAuthority(payload.data.currentAuthority || '');
       return { ...state, status: payload.data.code, type: payload.data.msg };
     },
   },

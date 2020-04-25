@@ -12,7 +12,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getAuthorityFromRouter, getRouteAuthority } from '@/utils/utils';
 import logo from '../assets/logo.svg';
-import { getRouters } from '@/services/routers';
+import { getRouters, getPermissions } from '@/services/routers';
 import * as allIcons from '@ant-design/icons/es';
 
 const noMatch = (
@@ -91,6 +91,7 @@ const defaultFooterDom = (
 const BasicLayout = props => {
 
   const [menuList, setMenuList] = useState([])
+  const [permission, setPermission] = useState([])
 
   const {
     dispatch,
@@ -113,7 +114,9 @@ const BasicLayout = props => {
     getRouters().then(data => {
       setMenuList(patchRoutes(data.data || []))
     })
-
+    getPermissions().then(data => {
+      setPermission(data.data)
+    })
   }, []);
 
   /**
@@ -137,7 +140,7 @@ const BasicLayout = props => {
   //   authority: undefined,
   // };
   //获取权限角色
-  const authorized = getRouteAuthority(location.pathname || '/', menuList)
+  const authorized = getRouteAuthority(location.pathname || '/', permission)
 
   const { formatMessage } = useIntl();
 
