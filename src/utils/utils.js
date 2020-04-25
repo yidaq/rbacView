@@ -37,6 +37,7 @@ export const getAuthorityFromRouter = (router = [], pathname) => {
   if (authority) return authority;
   return undefined;
 };
+
 export const getRouteAuthority = (path, routeData) => {
   let authorities;
   routeData.forEach(route => {
@@ -46,8 +47,9 @@ export const getRouteAuthority = (path, routeData) => {
         authorities = route.authority;
       } // exact match
 
-      if (route.path === path) {
+      if (route.path === path && route.authority) {
         authorities = route.authority || authorities;
+
       } // get children authority recursively
 
       if (route.routes) {

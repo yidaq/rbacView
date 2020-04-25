@@ -61,4 +61,7 @@ export default {
   'menu.系统管理.接口管理': '接口管理',
   'menu.系统管理.SQL监控': 'SQL监控',
   'menu.userList': '用户管理',
+  'menu.org': '组织管理',
+  'menu.org.org-user': '用户管理',
+
 };

@@ -55,6 +55,22 @@ export default defineConfig({
               component: './Welcome',
             },
             {
+              path: '/org',
+              name: 'org',
+              icon: 'dashboard',
+              routes: [
+                {
+                  path: '/org/user',
+                  name: 'org-user',
+                  icon: 'smile',
+                  component: './user/userList',
+                },
+                {
+                  component: './404',
+                }
+              ]
+            },
+            {
               path: '/admin',
               name: 'admin',
               icon: 'crown',

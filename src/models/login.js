@@ -65,7 +65,7 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority("超级管理员");
+      setAuthority("角色管理权限");
       return { ...state, status: payload.data.code, type: payload.data.msg };
     },
   },

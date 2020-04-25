@@ -10,14 +10,14 @@ import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { getAuthorityFromRouter } from '@/utils/utils';
+import { getAuthorityFromRouter, getRouteAuthority } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
 const noMatch = (
   <Result
     status={403}
     title="403"
-    subTitle="Sorry, you are not authorized to access this page."
+    subTitle="抱歉，你没有访问权限"
     extra={
       <Button type="primary">
         <Link to="/user/login">Go Login</Link>
@@ -29,11 +29,12 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
-  menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-    return Authorized.check(item.authority, localItem, null);
-  });
+// const menuDataRender = menuList =>
+//   menuList.map(item => {
+//     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+//     return Authorized.check(item.authority, localItem, null);
+//   });
+
 
 const defaultFooterDom = (
   <DefaultFooter
@@ -96,13 +97,19 @@ const BasicLayout = props => {
     }
   }; // get children authority
 
-  const authorized = getAuthorityFromRouter(props.route.routers, location.pathname || '/') || {
+  props.routes.routeList.map(item => {
+    item.children = item.children == '' ? undefined : item.children
+  })
+
+  // const authorized = getAuthorityFromRouter(props.routes.routeList, location.pathname || '/') || {
+  //   authority: undefined,
+  // };
+  //获取权限角色
+  const authorized = getRouteAuthority(location.pathname || '/', props.routes.routeList) || {
     authority: undefined,
   };
 
   const { formatMessage } = useIntl();
-
-  console.log(props.routes.routeList)
 
   return (
     <ProLayout
@@ -140,12 +147,12 @@ const BasicLayout = props => {
           );
       }}
       footerRender={() => defaultFooterDom}
-      menuDataRender={menuDataRender}
+      menuDataRender={() => props.routes.routeList}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
-      <Authorized authority={authorized.authority == '' ? undefined : authorized.authority} noMatch={noMatch}>
+      <Authorized authority={authorized == '' ? undefined : authorized} noMatch={noMatch}>
         {children}
       </Authorized>
     </ProLayout>
