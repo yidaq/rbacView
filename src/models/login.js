@@ -44,7 +44,7 @@ const Model = {
       }
     },
 
-    *logout({ }, { call }) {
+    *logout(_, { call }) {
 
       yield call(loginOut);
       //清除token

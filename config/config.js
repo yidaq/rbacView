@@ -64,6 +64,10 @@ export default defineConfig({
                   component: './user/userList',
                 },
                 {
+                  path: '/org/permission',
+                  component: './permissionList'
+                },
+                {
                   component: './404',
                 }
               ]

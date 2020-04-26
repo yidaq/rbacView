@@ -10,7 +10,7 @@ import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { getAuthorityFromRouter, getRouteAuthority } from '@/utils/utils';
+import { getRouteAuthority } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 import { getRouters, getPermissions } from '@/services/routers';
 import * as allIcons from '@ant-design/icons/es';
@@ -112,10 +112,16 @@ const BasicLayout = props => {
       });
     }
     getRouters().then(data => {
-      setMenuList(patchRoutes(data.data || []))
+      if (data !== undefined) {
+        setMenuList(patchRoutes(data.data || []))
+      } else {
+        window.location.reload()
+      }
     })
     getPermissions().then(data => {
-      setPermission(data.data)
+      if (data !== undefined) {
+        setPermission(data.data)
+      }
     })
   }, []);
 
@@ -140,7 +146,7 @@ const BasicLayout = props => {
   //   authority: undefined,
   // };
   //获取权限角色
-  const authorized = getRouteAuthority(location.pathname || '/', permission)
+  const authorized = getRouteAuthority(location.pathname || '/', permission || undefined)
 
   const { formatMessage } = useIntl();
 

@@ -4,6 +4,9 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import { getPageQuery } from '@/utils/utils';
+import { history } from 'umi';
+import { stringify } from 'querystring';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -29,11 +32,11 @@ const codeMessage = {
 const errorHandler = error => {
   const { response } = error;
 
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+  if (response && response.code) {
+    const errorText = codeMessage[response.code] || response.msg;
+    const { code, url } = response;
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${code}: ${url}`,
       description: errorText,
     });
   } else if (!response) {
@@ -95,17 +98,47 @@ request.interceptors.request.use(async (url, options) => {
 // response拦截器, 处理response
 request.interceptors.response.use(async response => {
   const data = await response.clone().json()
-  if (data.code === 0) {
-
-    return response;
-  } else {
+  if (data.code == 4010001) { //凭证过期重新登录
     notification.error({
-      description: data.msg || '您的网络发生异常，无法连接服务器',
-      message: '错误',
-    });
+      message: data.msg || '凭证过期请重新登录',
+    })
+    localStorage.clear()
+    const { redirect } = getPageQuery();
+    if (window.location.pathname !== '/user/login' && !redirect) {
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: window.location.href,
+        }),
+      })
+    }
+  } else if (data.code === 4010002) {
+    request('/api/user/token').then(data => {
+      if (data.code === 0) {
+        localStorage.setItem('access_token', data.data)
+      } else {
+        localStorage.clear()
+        const { redirect } = getPageQuery();
+        if (window.location.pathname !== '/user/login' && !redirect) {
+          history.replace({
+            pathname: '/user/login',
+            search: stringify({
+              redirect: window.location.href,
+            }),
+          })
+        }
+      }
+    })
+  } else if (data.code === 0) {
+    return response
+  } else if (data.code === 4030001) {
+    notification.error({
+      message: data.msg || '无权限访问',
+    })
+    return;
+  } else {
+    return response;
   }
-
-  return response
 });
 
 export default request;

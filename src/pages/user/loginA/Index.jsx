@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './style.less';
 import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Link, connect } from 'umi';
+import { connect } from 'umi';
 
 function Index(props) {
     const [message, setMessage] = useState(false);
