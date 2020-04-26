@@ -63,6 +63,7 @@ const ButtonFrom = (props) => {
                 label="菜单名称"
                 name="name"
                 defaultValue=""
+                hasFeedback
                 rules={[{ required: true, message: '目录名称不能为空!' }]}
             >
                 <Input placeholder="请输入目录名称" />
@@ -70,7 +71,8 @@ const ButtonFrom = (props) => {
 
             <Form.Item
                 label="所属菜单"
-                name="pidName"
+                name="pid"
+                hasFeedback
                 rules={[{ required: true, message: '所属菜单不能为空!' }]}
 
             >
@@ -95,13 +97,18 @@ const ButtonFrom = (props) => {
             <Form.Item
                 label="授权标识"
                 name="perms"
+                hasFeedback
+                rules={[{ required: true, message: '授权标识不能为空!' }]}
             >
                 <Input placeholder="请输入授权标识,如果 sys:user:list" />
+
             </Form.Item>
 
             <Form.Item
                 label="请求方式"
                 name="method"
+                hasFeedback
+                rules={[{ required: true, message: '请求方式不能为空!' }]}
             >
                 <Input placeholder="请输入请求方式，如 GET、POST" />
             </Form.Item>
@@ -109,6 +116,8 @@ const ButtonFrom = (props) => {
             <Form.Item
                 label="按钮标识"
                 name="code"
+                hasFeedback
+                rules={[{ required: true, message: '按钮控制标识不能为空!' }]}
             >
                 <Input placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list" />
             </Form.Item>

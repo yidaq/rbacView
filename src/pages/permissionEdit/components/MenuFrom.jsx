@@ -65,15 +65,17 @@ const MenuFrom = (props) => {
                 label="菜单名称"
                 name="name"
                 defaultValue=""
+                hasFeedback
                 rules={[{ required: true, message: '目录名称不能为空!' }]}
             >
                 <Input placeholder="请输入目录名称" />
             </Form.Item>
 
             <Form.Item
-                label="所属菜单"
+                label="所属目录"
+                hasFeedback
                 name="pid"
-                rules={[{ required: true, message: '所属菜单不能为空!' }]}
+                rules={[{ required: true, message: '所属目录不能为空!' }]}
 
             >
                 <TreeSelect

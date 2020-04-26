@@ -43,7 +43,7 @@ function MuluFrom(props) {
         <Form
             {...layout}
             name="basic"
-            initialValues={{ pid: '默认顶级菜单', status: true }}
+            initialValues={{ pid: '默认顶级菜单' }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             size={"middle"}

@@ -15,3 +15,15 @@ export async function getPermissionMenuTree(params) {
         method: 'POST',
     });
 }
+export async function updatePermission(params) {
+    return request('/api/permission', {
+        method: 'PUT',
+        data: { ...params },
+    });
+}
+export async function deletePermission(params) {
+    return request('/api/permission?permissionId=' + `${params.id}`, {
+        method: 'Delete',
+    });
+}
+

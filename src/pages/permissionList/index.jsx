@@ -5,44 +5,23 @@ import moment from "moment";
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { getPermissionTable } from '@/services/permission';
+import { getPermissionTable, updatePermission } from '@/services/permission';
 import Authorized from '@/utils/Authorized';
-import UpdateForm from './components/UpdateForm';
-
+import CreateForm from './components/CreateForm';
+import { deletePermission } from '@/services/permission'
 
 //批量删除
 const handleRemove = async selectedRows => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
 };
-/**
- * 更新节点
- * @param fields
- */
-
-const handleUpdate = async fields => {
-  const hide = message.loading('正在配置');
-
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
 
 const PermissionList = props => {
   const actionRef = useRef();
-  const [updateModalVisible, handleUpdateModalVisible] = useState(false);
+  const [createModalVisible, handleModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
+  const [id, setId] = useState('')
+  const [type, setType] = useState('')
 
   const columns = [
     {
@@ -149,21 +128,37 @@ const PermissionList = props => {
       fixed: 'right',
       render: (txt, record, index) => {
         return (<div>
-          <a onClick={() => {
-            handleUpdateModalVisible(true);
-            setStepFormValues(record);
-          }}>修改</a>
-
+          <Authorized authority="sys:permission:update" noMatch=''>
+            <a onClick={() => {
+              handleModalVisible(true);
+              setId(record.id)
+              setType(record.type)
+              setStepFormValues(record);
+            }}>修改</a>
+          </Authorized>
           <Divider type="vertical" />
+          <Authorized authority="sys:permission:delete" noMatch=''>
+            <Popconfirm title="确定删除此项? "
+              placement="leftTop"
+              onCancel={() => console.log("用户取消删除")}
+              onConfirm={() => {
+                deletePermission({ id: record.id }).then(success => {
+                  if (success !== undefined) {
+                    if (success.code === 0) {
+                      message.success('删除成功')
+                    } else {
+                      message.error(success.msg)
+                    }
+                    if (actionRef.current) {
+                      actionRef.current.reload();
+                    }
+                  }
+                })
 
-          <Popconfirm title="确定删除此项? "
-            placement="leftTop"
-            onCancel={() => console.log("用户取消删除")}
-            onConfirm={() => console.log("用户确定删除")
-              //此处调用api接口
-            }>
-            <a >删除</a>
-          </Popconfirm>
+              }}>
+              <a >删除</a>
+            </Popconfirm>
+          </Authorized>
         </div>)
       }
     }
@@ -209,24 +204,38 @@ const PermissionList = props => {
         scroll={{ x: 1900 }} >
       </ProTable>
       {stepFormValues && Object.keys(stepFormValues).length ? (
-        <UpdateForm
+        <CreateForm
           onSubmit={async value => {
-            const success = await handleUpdate(value);
-
-            if (success) {
-              handleModalVisible(false);
-              setStepFormValues({});
-
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
+            const values = {
+              ...value,
+              id: id,
+              status: value.status === true ? 1 : 0,
+              type: type,
+              perms: value.perms === undefined ? '' : value.perms,
+              url: value.url === undefined ? '' : value.url,
+              method: value.method === undefined ? '' : value.method,
+              orderNum: value.method === undefined ? '100' : value.orderNum,
+              code: value.method === undefined ? '' : value.code
             }
+
+            delete values.switch
+            await updatePermission(values).then(success => {
+              if (success !== undefined) {
+                if (success.code === 0) {
+                  message.success('添加成功')
+                } else {
+                  message.error(success.msg)
+                }
+                handleModalVisible(false);
+                setStepFormValues({});
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            })
           }}
-          onCancel={() => {
-            handleUpdateModalVisible(false);
-            setStepFormValues({});
-          }}
-          updateModalVisible={updateModalVisible}
+          onCancel={() => handleModalVisible(false)}
+          modalVisible={createModalVisible}
           values={stepFormValues}
         />
       ) : null}
