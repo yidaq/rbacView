@@ -24,6 +24,7 @@ const PermissionList = props => {
   const [type, setType] = useState('')
 
   const columns = [
+
     {
       title: '菜单名称',
       dataIndex: 'name',
@@ -168,6 +169,7 @@ const PermissionList = props => {
   return (
     <PageHeaderWrapper title={' '}>
       <ProTable
+        search={false}
         actionRef={actionRef}
         headerTitle="菜单列表"
         rowKey="key"
@@ -177,29 +179,9 @@ const PermissionList = props => {
             <Button icon={<PlusOutlined />} type="primary" onClick={() => props.history.push("/org/permission/1")}>
               新建
            </Button>
-          </Authorized>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown overlay={
-              <Menu
-                onClick={async e => {
-                  if (e.key === 'remove') {
-                    await handleRemove(selectedRows);
-                    action.reload();
-                  }
-                }}
-                selectedKeys={[]}
-              >
-                <Menu.Item key="remove">批量删除</Menu.Item>
-              </Menu>
-            }>
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
+          </Authorized>
         ]}
         columns={columns}
-        rowSelection={[]}
         request={params => getPermissionTable(params)}
         scroll={{ x: 1900 }} >
       </ProTable>
