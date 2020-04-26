@@ -136,8 +136,13 @@ request.interceptors.response.use(async response => {
       message: data.msg || '无权限访问',
     })
     return;
+  } else if (data.code === 5000001) {
+    notification.error({
+      message: data.msg || '网络异常',
+    })
+    return;
   } else {
-    return response;
+    return response
   }
 });
 

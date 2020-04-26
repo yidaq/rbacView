@@ -65,7 +65,12 @@ export default defineConfig({
                 },
                 {
                   path: '/org/permission',
-                  component: './permissionList'
+                  component: './permissionList',
+                  exact: true
+                },
+                {
+                  path: '/org/permission/:id?',
+                  component: './permissionEdit'
                 },
                 {
                   component: './404',
