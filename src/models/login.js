@@ -7,7 +7,7 @@ import { getPageQuery } from '@/utils/utils';
 const Model = {
   namespace: 'login',
   state: {
-    status: undefined,
+
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -18,6 +18,10 @@ const Model = {
         payload: response,
       }); // Login successfully
       if (response.code === 0) {
+        yield put({
+          type: 'changeAuthorty',
+          payload: response,
+        }); // Login successfully
         //存token
         localStorage.setItem("access_token", response.data.accessToken);
         localStorage.setItem("refresh_token", response.data.refreshToken);
@@ -39,7 +43,6 @@ const Model = {
             return;
           }
         }
-
         history.replace(redirect || '/');
       }
     },
@@ -63,9 +66,13 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.data.currentAuthority || '');
-      return { ...state, status: payload.data.code, type: payload.data.msg };
+      console.log(payload.msg)
+      return { status: payload.code, type: payload.msg };
     },
+    changeAuthorty(state, { payload }) {
+      setAuthority(payload.data.currentAuthority || '');
+      return { status: payload.code, type: payload.msg };
+    }
   },
 };
 export default Model;

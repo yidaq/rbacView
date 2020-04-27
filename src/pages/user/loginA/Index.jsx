@@ -26,11 +26,10 @@ function Index(props) {
             payload: { ...values, type },
         });
     };
-
     return (
         <div className={styles.main}>
-            {message && (
-                <LoginMessage content="账户或密码错误 " />
+            {props.userLogin.type && (
+                <LoginMessage content={props.userLogin.type} />
             )}
             <Form
                 name="normal_login"

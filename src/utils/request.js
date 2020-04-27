@@ -143,7 +143,21 @@ request.interceptors.response.use(async response => {
       message: data.msg || '网络异常',
     })
     return;
-  } else {
+  } else if (data.code === 4001000) {
+    notification.error({
+      message: data.msg || '网络异常',
+    })
+    const { redirect } = getPageQuery();
+    if (window.location.pathname !== '/user/login' && !redirect) {
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: window.location.href,
+        }),
+      })
+    }
+  }
+  else {
     return response
   }
 });
