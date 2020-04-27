@@ -114,18 +114,20 @@ request.interceptors.response.use(async response => {
     }
   } else if (data.code === 4010002) {
     request('/api/user/token').then(data => {
-      if (data.code === 0) {
-        localStorage.setItem('access_token', data.data)
-      } else {
-        localStorage.clear()
-        const { redirect } = getPageQuery();
-        if (window.location.pathname !== '/user/login' && !redirect) {
-          history.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          })
+      if (data !== undefined) {
+        if (data.code === 0) {
+          localStorage.setItem('access_token', data.data)
+        } else {
+          localStorage.clear()
+          const { redirect } = getPageQuery();
+          if (window.location.pathname !== '/user/login' && !redirect) {
+            history.replace({
+              pathname: '/user/login',
+              search: stringify({
+                redirect: window.location.href,
+              }),
+            })
+          }
         }
       }
     })

@@ -73,6 +73,10 @@ export default defineConfig({
                   component: './permission/permissionEdit'
                 },
                 {
+                  path: '/org/role',
+                  component: './role/roleList'
+                },
+                {
                   component: './404',
                 }
               ]
