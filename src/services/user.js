@@ -45,3 +45,9 @@ export async function deleteUsers(params) {
     data: params.key
   });
 }
+export async function updateUser(params) {
+  return request('/api/user', {
+    method: 'PUT',
+    data: { ...params }
+  });
+}

@@ -8,7 +8,7 @@ import UpdateForm from './components/UpdateForm';
 import AddRoleForm from './components/AddRoleForm';
 import { getUserTable } from '@/services/user';
 import moment from "moment";
-import { addUser, saveRoles, deleteUsers } from '@/services/user'
+import { addUser, saveRoles, deleteUsers, updateUser } from '@/services/user'
 import Authorized from '@/utils/Authorized';
 
 /**
@@ -41,15 +41,18 @@ const handleAdd = async fields => {
  * 更新节点
  * @param fields
  */
-
 const handleUpdate = async fields => {
     const hide = message.loading('正在配置');
-
     try {
-        await updateRule({
-            name: fields.name,
-            desc: fields.desc,
-            key: fields.key,
+        await updateUser({
+            id: fields.id,
+            username: fields.username,
+            password: fields.password,
+            phone: fields.phone,
+            nickName: fields.nickName,
+            email: fields.email,
+            status: fields.switch === true ? 1 : 0,
+            deptId: fields.deptId
         });
         hide();
         message.success('配置成功');

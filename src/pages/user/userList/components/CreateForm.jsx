@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Modal, Switch, TreeSelect, Select } from 'antd';
 import { withRouter, connect } from 'umi'
-const FormItem = Form.Item;
+
 const formLayout = {
   labelCol: {
     span: 6,
