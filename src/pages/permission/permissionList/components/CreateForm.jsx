@@ -236,7 +236,7 @@ const CreateForm = props => {
           hasFeedback
           rules={[{ required: true, message: '按钮名称不能为空!' }]}
         >
-          <Input placeholder="请输入按钮名称" />
+          <Input allowClear placeholder="请输入按钮名称" />
         </Form.Item>
 
         <Form.Item
@@ -261,8 +261,9 @@ const CreateForm = props => {
         <Form.Item
           label="接口URL"
           name="url"
+          hasFeedback
         >
-          <Input placeholder="请输入接口URL" />
+          <Input allowClear placeholder="请输入接口URL" />
         </Form.Item>
 
         <Form.Item
@@ -271,7 +272,7 @@ const CreateForm = props => {
           hasFeedback
           rules={[{ required: true, message: '授权标识不能为空!' }]}
         >
-          <Input placeholder="请输入授权标识,如果 sys:user:list" />
+          <Input allowClear placeholder="请输入授权标识,如果 sys:user:list" />
 
         </Form.Item>
 
@@ -295,14 +296,14 @@ const CreateForm = props => {
           hasFeedback
           rules={[{ required: true, message: '按钮控制标识不能为空!' }]}
         >
-          <Input placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list" />
+          <Input allowClear placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list" />
         </Form.Item>
 
         <Form.Item
           label="排序码"
           name="orderNum"
         >
-          <Input placeholder="请输入排序码" />
+          <Input allowClear placeholder="请输入排序码" />
         </Form.Item>
 
         <Form.Item name="switch" label="状态" valuePropName="checked">

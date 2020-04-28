@@ -52,14 +52,15 @@ const UpdateForm = props => {
                     hasFeedback
                     rules={[{ required: true, message: '角色名称不能为空!' }]}
                 >
-                    <Input placeholder="请输入目录名称" />
+                    <Input allowClear placeholder="请输入目录名称" />
                 </Form.Item>
 
                 <Form.Item
                     label="备注"
                     name="description"
+                    hasFeedback
                 >
-                    <Input placeholder='请输入备注' />
+                    <Input allowClear placeholder='请输入备注' />
                 </Form.Item>
 
                 <Form.Item

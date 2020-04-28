@@ -66,7 +66,7 @@ const ButtonFrom = (props) => {
                 hasFeedback
                 rules={[{ required: true, message: '目录名称不能为空!' }]}
             >
-                <Input placeholder="请输入目录名称" />
+                <Input allowClear placeholder="请输入目录名称" />
             </Form.Item>
 
             <Form.Item
@@ -90,8 +90,9 @@ const ButtonFrom = (props) => {
             <Form.Item
                 label="接口URL"
                 name="url"
+                hasFeedback
             >
-                <Input placeholder="请输入接口URL" />
+                <Input allowClear placeholder="请输入接口URL" />
             </Form.Item>
 
             <Form.Item
@@ -100,7 +101,7 @@ const ButtonFrom = (props) => {
                 hasFeedback
                 rules={[{ required: true, message: '授权标识不能为空!' }]}
             >
-                <Input placeholder="请输入授权标识,如果 sys:user:list" />
+                <Input allowClear placeholder="请输入授权标识,如果 sys:user:list" />
 
             </Form.Item>
 
@@ -110,7 +111,7 @@ const ButtonFrom = (props) => {
                 hasFeedback
                 rules={[{ required: true, message: '请求方式不能为空!' }]}
             >
-                <Input placeholder="请输入请求方式，如 GET、POST" />
+                <Input allowClear placeholder="请输入请求方式，如 GET、POST" />
             </Form.Item>
 
             <Form.Item
@@ -119,14 +120,15 @@ const ButtonFrom = (props) => {
                 hasFeedback
                 rules={[{ required: true, message: '按钮控制标识不能为空!' }]}
             >
-                <Input placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list" />
+                <Input allowClear placeholder="请输入前后端分离按钮控制标识,如果 btn-permission-list" />
             </Form.Item>
 
             <Form.Item
                 label="排序码"
                 name="orderNum"
+                hasFeedback
             >
-                <Input placeholder="请输入排序码" />
+                <Input allowClear placeholder="请输入排序码" />
             </Form.Item>
 
             <Form.Item label="状态">

@@ -28,7 +28,7 @@ function Index(props) {
     };
     return (
         <div className={styles.main}>
-            {props.userLogin.type && (
+            {props.userLogin.type && props.userLogin.status !== 0 && (
                 <LoginMessage content={props.userLogin.type} />
             )}
             <Form
@@ -40,13 +40,14 @@ function Index(props) {
                     name="username"
                     rules={[{ required: true, message: '用户名不能为空!' }]}
                 >
-                    <Input size="large" prefix={<UserOutlined style={{ color: '#1890ff' }} className={styles.prefixIcon} />} placeholder="请输入用户名" />
+                    <Input allowClear size="large" prefix={<UserOutlined style={{ color: '#1890ff' }} className={styles.prefixIcon} />} placeholder="请输入用户名" />
                 </Form.Item>
                 <Form.Item
                     name="password"
                     rules={[{ required: true, message: '密码不能为空!' }]}
                 >
                     <Input.Password
+                        allowClear
                         size="large"
                         prefix={<LockOutlined style={{ color: '#1890ff' }} className={styles.prefixIcon} />}
                         type="password"

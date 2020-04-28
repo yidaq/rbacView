@@ -5,17 +5,28 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
+import AddRoleForm from './components/AddRoleForm';
+import { getUserTable } from '@/services/user';
+import moment from "moment";
+import { addUser, saveRoles, deleteUsers } from '@/services/user'
+import Authorized from '@/utils/Authorized';
+
 /**
  * 添加节点
  * @param fields
  */
 
 const handleAdd = async fields => {
+    console.log(fields)
     const hide = message.loading('正在添加');
-
     try {
-        await addRule({
-            desc: fields.desc,
+        await addUser({
+            username: fields.username,
+            password: fields.password,
+            deptId: fields.deptId,
+            phone: fields.phone === undefined ? '' : fields.phone,
+            createWhere: fields.createWhere,
+            status: fields.switch === true ? 1 : 0
         });
         hide();
         message.success('添加成功');
@@ -57,10 +68,9 @@ const handleUpdate = async fields => {
 const handleRemove = async selectedRows => {
     const hide = message.loading('正在删除');
     if (!selectedRows) return true;
-
     try {
-        await removeRule({
-            key: selectedRows.map(row => row.key),
+        await deleteUsers({
+            key: selectedRows.map(row => row.id),
         });
         hide();
         message.success('删除成功，即将刷新');
@@ -72,69 +82,109 @@ const handleRemove = async selectedRows => {
     }
 };
 
+const addRoles = async fields => {
+    const hide = message.loading('正在配置');
+    try {
+        await saveRoles({ userId: fields.id, roleIds: fields.roleIds });
+        hide();
+        message.success('配置成功');
+        return true;
+    } catch (error) {
+        hide();
+        message.error('配置失败请重试！');
+        return false;
+    }
+}
+
 const userList = () => {
     const [createModalVisible, handleModalVisible] = useState(false);
     const [updateModalVisible, handleUpdateModalVisible] = useState(false);
     const [stepFormValues, setStepFormValues] = useState({});
+    const [addRoleModalVisible, handleAddRoleModalVisible] = useState(false);
     const actionRef = useRef();
     const columns = [
         {
-            title: '规则名称',
-            dataIndex: 'name',
+            title: '序号',
+            valueType: 'indexBorder',
+            width: 72,
+            align: 'center'
         },
         {
-            title: '描述',
-            dataIndex: 'desc',
+            title: '昵称',
+            dataIndex: 'nickName',
+            align: 'center',
         },
         {
-            title: '服务调用次数',
-            dataIndex: 'callNo',
-            sorter: true,
-            renderText: val => `${val} 万`,
+            title: '账号',
+            dataIndex: 'username',
+            align: 'center',
         },
         {
-            title: '状态',
+            title: '所属团队',
+            hideInSearch: true,
+            dataIndex: 'deptName',
+            align: 'center',
+        },
+        {
+            title: '邮箱',
+            dataIndex: 'email',
+            align: 'center',
+        },
+        {
+            title: '账号状态',
             dataIndex: 'status',
+            align: 'center',
             valueEnum: {
                 0: {
-                    text: '关闭',
+                    text: '禁用',
                     status: 'Default',
                 },
                 1: {
-                    text: '运行中',
+                    text: '正常',
                     status: 'Processing',
-                },
-                2: {
-                    text: '已上线',
-                    status: 'Success',
-                },
-                3: {
-                    text: '异常',
-                    status: 'Error',
                 },
             },
         },
         {
-            title: '上次调度时间',
-            dataIndex: 'updatedAt',
+            title: '创建时间',
+            dataIndex: 'createTime',
             sorter: true,
-            valueType: 'dateTime',
+            valueType: 'dateTimeRange',
+            align: 'center',
+            render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>
         },
         {
             title: '操作',
+            align: 'center',
             dataIndex: 'option',
             valueType: 'option',
             render: (_, record) => (
                 <>
-                    <a
-                        onClick={() => {
-                            handleUpdateModalVisible(true);
-                            setStepFormValues(record);
-                        }}>
-                        配置
-                    </a>
+                    <Authorized authority="sys:user:role:update" noMatch=''>
+                        <a
+                            onClick={() => {
+                                handleAddRoleModalVisible(true)
+                                setStepFormValues(record)
+                            }}
+                        >赋予角色</a>
+                    </Authorized>
                     <Divider type="vertical" />
-                    <a href="">订阅警报</a>
+                    <Authorized authority="sys:user:update" noMatch=''>
+                        <a
+                            onClick={() => {
+                                handleUpdateModalVisible(true);
+                                setStepFormValues(record);
+                            }}>
+                            修改
+                    </a>
+                    </Authorized>
+                    <Divider type="vertical" />
+                    <Authorized authority="sys:user:delete" noMatch=''>
+                        <a onClick={() => {
+                            handleRemove([{ id: record.id }]),
+                                actionRef.current.reload()
+                        }}>删除</a>
+                    </Authorized>
                 </>
             ),
         },
@@ -142,13 +192,16 @@ const userList = () => {
     return (
         <PageHeaderWrapper>
             <ProTable
-                headerTitle="查询表格"
+                headerTitle="用户列表"
                 actionRef={actionRef}
-                rowKey="key"
+                rowKey="id"
                 toolBarRender={(action, { selectedRows }) => [
-                    <Button icon={<PlusOutlined />} type="primary" onClick={() => handleModalVisible(true)}>
-                        新建
-                     </Button>,
+                    <Authorized authority="sys:user:add" noMatch=''>
+
+                        <Button icon={<PlusOutlined />} type="primary" onClick={() => handleModalVisible(true)}>
+                            新建
+                     </Button>
+                    </Authorized>,
                     selectedRows && selectedRows.length > 0 && (
                         <Dropdown
                             overlay={
@@ -162,44 +215,77 @@ const userList = () => {
                                     selectedKeys={[]}
                                 >
                                     <Menu.Item key="remove">批量删除</Menu.Item>
-                                    <Menu.Item key="approval">批量审批</Menu.Item>
                                 </Menu>
-                            }
-                        >
+                            }>
                             <Button>
                                 批量操作 <DownOutlined />
                             </Button>
                         </Dropdown>
                     ),
                 ]}
-                tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-                    <div>
-                        已选择{' '}<a style={{ fontWeight: 600, }}>{selectedRowKeys.length} </a>{' '}项&nbsp;&nbsp;
-                        <span>
-                            服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-                        </span>
-                    </div>
-                )}
-                // request={params => queryRule(params)}
+
+                request={
+                    async (params = {}) => {
+                        const data = await getUserTable(
+                            {
+                                ...params,
+                                pageNum: params.current,
+                                pageSize: params.pageSize,
+                            },
+                        );
+                        const list = data.data.list
+                        return {
+                            data: list,
+                            page: params.current,
+                            success: true,
+                            total: data.data.totalRows,
+                        };
+                    }}
                 columns={columns}
+                search={<Authorized authority="sys:user:list" noMatch={false}>{true}</Authorized>}
                 rowSelection={{}}
             />
 
             <CreateForm
                 onSubmit={async value => {
                     const success = await handleAdd(value);
-
                     if (success) {
                         handleModalVisible(false);
+                        setStepFormValues({});
 
                         if (actionRef.current) {
                             actionRef.current.reload();
                         }
                     }
                 }}
-                onCancel={() => handleModalVisible(false)}
+                onCancel={() => {
+                    handleModalVisible(false),
+                        setStepFormValues({})
+                }}
                 modalVisible={createModalVisible}
             />
+            {stepFormValues && Object.keys(stepFormValues).length ? (
+                <AddRoleForm
+                    onSubmit={async value => {
+                        console.log(value)
+                        const success = await addRoles(value);
+                        if (success) {
+                            handleAddRoleModalVisible(false);
+                            setStepFormValues({});
+                            if (actionRef.current) {
+                                actionRef.current.reload();
+                            }
+                        }
+                    }}
+                    onCancel={() => {
+                        handleAddRoleModalVisible(false),
+                            setStepFormValues({})
+                    }}
+                    modalVisible={addRoleModalVisible}
+                    values={stepFormValues}
+
+                />
+            ) : null}
             {stepFormValues && Object.keys(stepFormValues).length ? (
                 <UpdateForm
                     onSubmit={async value => {

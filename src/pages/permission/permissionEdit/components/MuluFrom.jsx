@@ -54,7 +54,7 @@ function MuluFrom(props) {
                 defaultValue=""
                 rules={[{ required: true, message: '目录名称不能为空!' }]}
             >
-                <Input placeholder="请输入目录名称" />
+                <Input allowClear placeholder="请输入目录名称" />
             </Form.Item>
 
             <Form.Item
@@ -67,15 +67,17 @@ function MuluFrom(props) {
             <Form.Item
                 label="接口URL"
                 name="url"
+                hasFeedback
             >
-                <Input placeholder="请输入接口URL" />
+                <Input allowClear placeholder="请输入接口URL" />
             </Form.Item>
 
             <Form.Item
                 label="排序码"
                 name="orderNum"
+                hasFeedback
             >
-                <Input placeholder="请输入排序码" />
+                <Input allowClear placeholder="请输入排序码" />
             </Form.Item>
 
             <Form.Item label="状态">
