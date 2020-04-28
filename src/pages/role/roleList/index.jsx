@@ -78,6 +78,7 @@ const roleList = props => {
         },
         {
             align: 'center',
+            hideInSearch: true,
             title: '描述',
             dataIndex: 'description',
             valueType: 'code',
@@ -145,10 +146,9 @@ const roleList = props => {
                 request={async (params = {}) => {
                     const data = await getRoleTable(
                         {
-                            params: {
-                                pageNum: params.current,
-                                pageSize: params.pageSize,
-                            },
+                            ...params,
+                            pageNum: params.current,
+                            pageSize: params.pageSize,
                         },
                     );
                     const list = data.data.list
@@ -158,7 +158,9 @@ const roleList = props => {
                         success: true,
                         total: data.data.totalRows,
                     };
+
                 }}
+                search={<Authorized authority="sys:role:list" noMatch={false}>{true}</Authorized>}
                 dateFormatter="string"
             />
             <CreateForm

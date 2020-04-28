@@ -163,7 +163,7 @@ const PermissionList = props => {
 
 
   return (
-    <PageHeaderWrapper title={' '}>
+    <PageHeaderWrapper >
       <ProTable
         search={false}
         actionRef={actionRef}

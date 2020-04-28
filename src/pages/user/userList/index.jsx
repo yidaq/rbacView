@@ -5,7 +5,6 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule } from './service';
 /**
  * 添加节点
  * @param fields
@@ -181,7 +180,7 @@ const userList = () => {
                         </span>
                     </div>
                 )}
-                request={params => queryRule(params)}
+                // request={params => queryRule(params)}
                 columns={columns}
                 rowSelection={{}}
             />
