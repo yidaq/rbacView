@@ -86,15 +86,17 @@ export default defineConfig({
               ]
             },
             {
-              path: '/admin',
-              name: 'admin',
-              component: './Admin',
+              path: '/sys',
+              name: 'sys',
               routes: [
                 {
-                  path: '/admin/sub-page',
-                  name: 'sub-page',
-                  component: './Welcome',
+                  path: '/sys/swagger',
+                  name: 'sys-swagger',
+                  component: './swagger',
                 },
+                {
+                  component: './404',
+                }
               ],
             },
             {
