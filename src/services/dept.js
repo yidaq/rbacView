@@ -7,9 +7,22 @@ export async function getDeptTree() {
 export async function getDeptTreeExId(params) {
     return request('/api/dept/tree?deptId=' + `${params.id}`)
 }
+
+//部门管理操作
+export async function getDeptTable() {
+    return request('/api/depts')
+}
+//获取部门角色
 export async function getDeptRoles(params) {
-    return request('/api/dept/roles?deptId='`${params.id}`, {
+    return request('/api/dept/roles?deptId=' + `${params.id}`, {
         method: 'POST',
+    });
+}
+//更新部门角色
+export async function updateDeptRoles(params) {
+    return request('/api/dept/roles', {
+        method: 'PUT',
+        data: { ...params }
     });
 }
 
