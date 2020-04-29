@@ -28,7 +28,7 @@ class SecurityLayout extends React.Component {
 
     // const isLogin = currentUser && currentUser.id;
 
-    const isLogin = localStorage.getItem('access_token');
+    const isLogin = sessionStorage.getItem('access_token');
 
     const queryString = stringify({
       redirect: window.location.href,

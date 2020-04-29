@@ -23,8 +23,8 @@ const Model = {
           payload: response,
         }); // Login successfully
         //存token
-        localStorage.setItem("access_token", response.data.accessToken);
-        localStorage.setItem("refresh_token", response.data.refreshToken);
+        sessionStorage.setItem("access_token", response.data.accessToken);
+        sessionStorage.setItem("refresh_token", response.data.refreshToken);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -51,6 +51,7 @@ const Model = {
 
       yield call(loginOut);
       //清除token
+      sessionStorage.clear()
       localStorage.clear()
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {

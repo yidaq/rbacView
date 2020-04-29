@@ -1,5 +1,5 @@
 import { queryCurrent, query as queryUsers, getUserRoles } from '@/services/user';
-
+import { getDeptRoles } from '@/services/dept'
 const UserModel = {
   namespace: 'user',
   state: {
@@ -26,6 +26,14 @@ const UserModel = {
     },
 
     *getUserRoles({ payload }, { call, put }) {
+      const response = yield call(getDeptRoles, payload);
+      yield put({
+        type: 'saveUserRole',
+        payload: response,
+      })
+    },
+
+    *getdDeptRoles({ payload }, { call, put }) {
       const response = yield call(getUserRoles, payload);
       yield put({
         type: 'saveUserRole',

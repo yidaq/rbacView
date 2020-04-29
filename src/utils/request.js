@@ -28,7 +28,6 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-
 const errorHandler = error => {
   const { response } = error;
 
@@ -65,8 +64,8 @@ request.interceptors.request.use(async (url, options) => {
     const headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'authorization': localStorage.getItem("access_token"),
-      'refresh_token': localStorage.getItem("refresh_token"),
+      'authorization': sessionStorage.getItem("access_token"),
+      'refresh_token': sessionStorage.getItem("refresh_token"),
     };
     return (
       {
@@ -78,7 +77,7 @@ request.interceptors.request.use(async (url, options) => {
     const headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'authorization': localStorage.getItem("access_token"),
+      'authorization': sessionStorage.getItem("access_token"),
     };
     return (
       {
@@ -96,7 +95,8 @@ request.interceptors.request.use(async (url, options) => {
 })
 
 // response拦截器, 处理response
-request.interceptors.response.use(async response => {
+request.interceptors.response.use(async (response, options) => {
+  // console.log(response.url.substring(response.url.indexOf('/api'), response.url.length))
   const data = await response.clone().json()
   if (data.code == 4010001) { //凭证过期重新登录
     notification.error({
@@ -112,12 +112,42 @@ request.interceptors.response.use(async response => {
         }),
       })
     }
-  } else if (data.code === 4010002) {
+  } else if (data.code === 4010002) {//刷新token
     request('/api/user/token').then(data => {
       if (data !== undefined) {
         if (data.code === 0) {
-          localStorage.setItem('access_token', data.data)
+          notification.error({
+            message: '权限以更改请重新登录',
+          })
+          request('api/user/logout')
+          localStorage.clear()
+          const { redirect } = getPageQuery();
+          if (window.location.pathname !== '/user/login' && !redirect) {
+            history.replace({
+              pathname: '/user/login',
+              search: stringify({
+                redirect: window.location.href,
+              }),
+            })
+          }
+          return;
+          //刷新成功重新请求
+          // sessionStorage.setItem('access_token', data.data)
+          // request(response.url.substring(response.url.indexOf('/api'), response.url.length), {
+          //   method: options.method,
+          //   data: options.data
+          // })
+          // request('/api/user/permissions').then(data => {
+          //   if (data !== undefined) {
+          //     if (data.code === 0) {
+          //       localStorage.setItem('antd-pro-authority', JSON.stringify(data.data))
+          //     }
+          //   }
+          // })
+          //被修改权限用户刷新页面
+          // window.location.reload(true)
         } else {
+          request('/api/user/logout')
           localStorage.clear()
           const { redirect } = getPageQuery();
           if (window.location.pathname !== '/user/login' && !redirect) {
@@ -147,6 +177,8 @@ request.interceptors.response.use(async response => {
     notification.error({
       message: data.msg || '网络异常',
     })
+    localStorage.clear()
+    sessionStorage.clear()
     const { redirect } = getPageQuery();
     if (window.location.pathname !== '/user/login' && !redirect) {
       history.replace({
