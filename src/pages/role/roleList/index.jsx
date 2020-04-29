@@ -72,7 +72,7 @@ const roleList = props => {
                 },
                 0: {
                     text: '禁用',
-                    status: 'Error',
+                    status: 'Default',
                 },
             },
         },

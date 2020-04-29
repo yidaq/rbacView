@@ -77,6 +77,10 @@ export default defineConfig({
                   component: './role/roleList'
                 },
                 {
+                  path: '/org/dept',
+                  component: './dept'
+                },
+                {
                   component: './404',
                 }
               ]

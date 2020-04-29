@@ -14,16 +14,11 @@ const formLayout = {
 const UpdateForm = props => {
     const [form] = Form.useForm();
     const { modalVisible, onSubmit: handleUpdate, onCancel: handleUpdateModalVisible, updateModalVisible, values } = props;
-    const [value, setValue] = useState('')
 
     const okHandle = async () => {
         const fieldsValue = await form.validateFields();
         form.resetFields();
         handleUpdate(fieldsValue);
-    };
-
-    const onChange = value => {
-        setValue(value)
     };
 
     return (
@@ -69,15 +64,12 @@ const UpdateForm = props => {
                 >
                     <TreeSelect
                         style={{ width: '100%' }}
-                        treeCheckable={true}
-                        value={value}
                         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                         treeData={values.menuTreeRespVO}
                         placeholder="请选权限"
                         allowClear
                         multiple
                         treeDefaultExpandAll={true}
-                        onChange={onChange}
                     />
 
                 </Form.Item>

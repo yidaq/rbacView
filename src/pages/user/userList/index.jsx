@@ -51,7 +51,7 @@ const handleUpdate = async fields => {
             phone: fields.phone,
             nickName: fields.nickName,
             email: fields.email,
-            status: fields.switch === true ? 1 : 0,
+            status: fields.switch === true ? 1 : 2,
             deptId: fields.deptId
         });
         hide();
@@ -138,7 +138,7 @@ const userList = () => {
             dataIndex: 'status',
             align: 'center',
             valueEnum: {
-                0: {
+                2: {
                     text: '禁用',
                     status: 'Default',
                 },
