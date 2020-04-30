@@ -63,3 +63,6 @@ export async function updateUserPassword(params) {
     data: { ...params }
   });
 }
+export async function getLoginUser() {
+  return request('/api/user/loginUsers');
+}
