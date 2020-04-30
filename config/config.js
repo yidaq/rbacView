@@ -51,7 +51,7 @@ export default defineConfig({
             {
               path: '/welcome',
               name: 'welcome',
-              component: './Welcome',
+              component: './dashboard',
             },
             {
               path: '/org',
@@ -98,6 +98,11 @@ export default defineConfig({
                   path: '/sys/swagger',
                   name: 'sys-swagger',
                   component: './swagger',
+                },
+                {
+                  path: '/sys/logs',
+                  name: 'sys-log',
+                  component: './log',
                 },
                 {
                   component: './404',

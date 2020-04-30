@@ -18,7 +18,9 @@ const UserModel = {
 
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
-      localStorage.setItem('group', response.data.group)
+      if (response.data !== undefined) {
+        localStorage.setItem('group', response.data.group)
+      }
       yield put({
         type: 'saveCurrentUser',
         payload: response,

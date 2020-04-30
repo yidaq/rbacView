@@ -66,5 +66,6 @@ export default {
   'menu.org.account': '个人中心',
   'menu.sys': '系统管理',
   'menu.sys.sys-swagger': '接口管理',
+  'menu.sys.sys-log': '日志管理',
 
 };

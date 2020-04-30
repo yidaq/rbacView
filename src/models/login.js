@@ -67,7 +67,6 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      console.log(payload.msg)
       return { status: payload.code, type: payload.msg };
     },
     changeAuthorty(state, { payload }) {
