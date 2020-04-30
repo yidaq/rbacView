@@ -57,3 +57,9 @@ export async function updateUserOwnInfo(params) {
     data: { ...params }
   });
 }
+export async function updateUserPassword(params) {
+  return request('/api/user/pwd', {
+    method: 'PUT',
+    data: { ...params }
+  });
+}

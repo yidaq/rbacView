@@ -21,7 +21,7 @@ class AvatarDropdown extends React.Component {
       return;
     }
 
-    history.push(`/account/${key}`);
+    history.push(`/org/${key}`);
   };
 
   render() {
@@ -34,12 +34,10 @@ class AvatarDropdown extends React.Component {
     } = this.props;
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        {menu && (
-          <Menu.Item key="center">
-            <UserOutlined />
+        <Menu.Item key="account">
+          <UserOutlined />
             个人中心
           </Menu.Item>
-        )}
         {menu && (
           <Menu.Item key="settings">
             <SettingOutlined />

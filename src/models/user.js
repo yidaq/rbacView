@@ -68,6 +68,7 @@ const UserModel = {
         payload: response
       })
     },
+
   },
 
   reducers: {
