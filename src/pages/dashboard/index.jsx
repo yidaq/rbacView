@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Avatar, Card, Col, List, Skeleton, Row, Statistic } from 'antd';
 import styles from './style.less';
-import { connect } from 'umi';
+import { connect, Link } from 'umi';
 import { getLoginUser } from '@/services/user'
 import moment from 'moment';
 import { render } from 'enzyme';
@@ -45,7 +45,7 @@ const ExtraContent = () => (
     </div>
 );
 const DashBoard = props => {
-    const { dispatch, currentUser, loginUsers, loginUsersLoading, currentUserLoading } = props;
+    const { dispatch, currentUser, loginUsers, loginUsersLoading, currentUserLoading, deptInfo, deptInfoLoading } = props;
     useEffect(() => {
         if (dispatch) {
             dispatch({
@@ -103,18 +103,19 @@ const DashBoard = props => {
                         }}
                         bordered={false}
                         title="部门"
-                    // loading={projectLoading}
+                        loading={deptInfoLoading}
                     >
                         <div className={styles.members}>
                             <Row gutter={48}>
-                                {/* {projectNotice.map(item => (
-                                    <Col span={12} key={`members-item-${item.id}`}>
+                                {console.log(deptInfo)}
+                                {deptInfo.map(item => (
+                                    <Col span={12} key={item.id}>
                                         <Link to={item.href}>
-                                            <Avatar src={item.logo} size="small" />
-                                            <span className={styles.member}>{item.member}</span>
+                                            <Avatar src={item.avatar} size="small" />
+                                            <span className={styles.member}>{item.name}</span>
                                         </Link>
                                     </Col>
-                                ))} */}
+                                ))}
                             </Row>
                         </div>
                     </Card>
@@ -127,6 +128,8 @@ const DashBoard = props => {
 export default connect(({ dashboard, loading }) => ({
     currentUser: dashboard.currentUser,
     loginUsers: dashboard.loginUsers,
+    deptInfo: dashboard.deptInfo,
+    deptInfoLoading: loading.effects['dashboard/fetchDeptInfo'],
     currentUserLoading: loading.effects['dashboard/fetchCurrent'],
     loginUsersLoading: loading.effects['dashboard/fetchLoginUsers'],
 }))(DashBoard);
