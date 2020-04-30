@@ -51,3 +51,9 @@ export async function updateUser(params) {
     data: { ...params }
   });
 }
+export async function updateUserOwnInfo(params) {
+  return request('/api/user/info', {
+    method: 'PUT',
+    data: { ...params }
+  });
+}

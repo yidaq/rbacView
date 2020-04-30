@@ -1,4 +1,4 @@
-import { queryCurrent, query as queryUsers, getUserRoles } from '@/services/user';
+import { queryCurrent, query as queryUsers, getUserRoles, updateUserOwnInfo } from '@/services/user';
 import { getDeptRoles } from '@/services/dept'
 const UserModel = {
   namespace: 'user',
@@ -61,7 +61,13 @@ const UserModel = {
       })
     },
 
-
+    *updateUserInfo({ payload }, { call, put }) {
+      const response = yield call(updateUserOwnInfo, payload)
+      yield put({
+        type: 'saveCurrentUser',
+        payload: response
+      })
+    },
   },
 
   reducers: {

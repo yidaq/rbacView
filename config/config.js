@@ -81,6 +81,11 @@ export default defineConfig({
                   component: './dept'
                 },
                 {
+                  name: 'account',
+                  path: '/org/account',
+                  component: './account'
+                },
+                {
                   component: './404',
                 }
               ]

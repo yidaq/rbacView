@@ -63,5 +63,8 @@ export default {
   'menu.userList': '用户管理',
   'menu.org': '组织管理',
   'menu.org.org-user': '用户管理',
+  'menu.org.account': '个人中心',
+  'menu.sys': '系统管理',
+  'menu.sys.sys-swagger': '接口管理',
 
 };
