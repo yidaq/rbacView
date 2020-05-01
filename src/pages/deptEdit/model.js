@@ -1,16 +1,30 @@
 import { queryCurrent } from '@/services/user';
+import { getDeptUsers, getDeptPermissions, getDeptInfo } from './service'
 
 const DeptEdit = {
     namespace: 'deptEdit',
     state: {
         currentUser: undefined,
-        loginUsers: [],
+        deptUsers: [],
+        deptPermissions: [],
         deptInfo: [],
     },
     effects: {
-        *init(_, { put }) {
+        *init({ payload }, { put }) {
             yield put({
                 type: 'fetchCurrent',
+            });
+            yield put({
+                type: 'fetchDeptUser',
+                payload: payload
+            });
+            yield put({
+                type: 'fetchDeptPermissions',
+                payload: payload
+            });
+            yield put({
+                type: 'fetchDeptInfo',
+                payload: payload
             });
         },
 
@@ -20,6 +34,35 @@ const DeptEdit = {
                 type: 'save',
                 payload: {
                     currentUser: response.data,
+                },
+            });
+        },
+
+        *fetchDeptUser({ payload }, { call, put }) {
+            const response = yield call(getDeptUsers, payload);
+            yield put({
+                type: 'save',
+                payload: {
+                    deptUsers: response.data,
+                },
+            });
+        },
+
+        *fetchDeptPermissions({ payload }, { call, put }) {
+            const response = yield call(getDeptPermissions, payload);
+            yield put({
+                type: 'save',
+                payload: {
+                    deptPermission: response.data,
+                },
+            });
+        },
+        *fetchDeptInfo({ payload }, { call, put }) {
+            const response = yield call(getDeptInfo, payload);
+            yield put({
+                type: 'save',
+                payload: {
+                    deptInfo: response.data,
                 },
             });
         },
@@ -35,8 +78,8 @@ const DeptEdit = {
         clear() {
             return {
                 currentUser: undefined,
-                loginUsers: [],
-                deptInfo: [],
+                deptUsers: [],
+                deptPermissions: [],
             };
         },
     },
