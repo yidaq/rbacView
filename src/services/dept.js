@@ -25,4 +25,19 @@ export async function updateDeptRoles(params) {
         data: { ...params }
     });
 }
+//获取部门角色
+export async function getUserByKey(params) {
+    return request('/api/user/selectUser?', {
+        method: 'POST',
+        data: { key: params.key }
+    });
+}
+//获取部门角色
+export async function addDept(params) {
+    return request('/api/dept?', {
+        method: 'POST',
+        data: { ...params }
+    });
+}
+
 

@@ -107,10 +107,9 @@ const DashBoard = props => {
                     >
                         <div className={styles.members}>
                             <Row gutter={48}>
-                                {console.log(deptInfo)}
                                 {deptInfo.map(item => (
                                     <Col span={12} key={item.id}>
-                                        <Link to={item.href}>
+                                        <Link to=''>
                                             <Avatar src={item.avatar} size="small" />
                                             <span className={styles.member}>{item.name}</span>
                                         </Link>

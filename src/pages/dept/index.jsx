@@ -10,7 +10,8 @@ import UpdateForm from './components/UpdateForm';
 import AddRoleForm from './components/AddRoleForm';
 import { updateDeptRoles } from '@/services/dept'
 import { findDOMNode } from 'react-dom';
-
+import Authorized from '@/utils/Authorized';
+import { addDept } from '@/services/dept'
 
 const { Search } = Input;
 
@@ -51,6 +52,7 @@ export const DeptTable = props => {
     } = props;
     const [stepFormValues, setStepFormValues] = useState({});
     const [addRoleModalVisible, handleAddRoleModalVisible] = useState(false);
+    const [createFormModalVisible, handleCreateFormModalVisible] = useState(false);
     const actionRef = useRef();
 
 
@@ -64,11 +66,11 @@ export const DeptTable = props => {
         showSizeChanger: true,
         showQuickJumper: true,
         pageSize: 5,
-        total: 50,
+        total: deptTable.length,
     };
 
     const editAndDelete = (key, currentItem) => {
-        if (key === 'edit') console.log('修改');
+        if (key === 'edit') console.log(currentItem);
         else if (key === 'delete') {
             Modal.confirm({
                 title: '删除任务',
@@ -82,7 +84,9 @@ export const DeptTable = props => {
 
     const extraContent = (
         <div className={styles.extraContent}>
-            <Button type="primary" >新增</Button>
+            <Authorized authority="sys:dept:add" noMatch=''>
+                <Button type="primary" onClick={() => handleCreateFormModalVisible(true)}>新增</Button>
+            </Authorized>
             <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
         </div>
     );
@@ -114,6 +118,27 @@ export const DeptTable = props => {
             return false;
         }
     }
+
+    const handleAdd = async fields => {
+        console.log(fields)
+        const hide = message.loading('正在添加');
+        try {
+            await addDept({
+                name: fields.name,
+                pid: fields.pid,
+                managerId: fields.managerId,
+                phone: fields.phone === undefined ? '' : fields.phone,
+                status: fields.switch === true ? 1 : 0
+            });
+            hide();
+            message.success('添加成功');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('添加失败请重试！');
+            return false;
+        }
+    };
     return (
         <div>
             <PageHeaderWrapper>
@@ -124,7 +149,7 @@ export const DeptTable = props => {
                                 <Info title="我的部门" value={localStorage.getItem('group')} bordered />
                             </Col>
                             <Col sm={8} xs={24}>
-                                <Info title="本周任务平均处理时间" value="32分钟" bordered />
+                                <Info title="已成立部门" value={deptTable.length} bordered />
                             </Col>
                             <Col sm={8} xs={24}>
                                 <Info title="本周完成任务数" value="24个任务" />
@@ -149,19 +174,21 @@ export const DeptTable = props => {
                             size="large"
                             rowKey="id"
                             loading={loading}
-                            // pagination={paginationProps}
+                            pagination={paginationProps}
                             dataSource={deptTable}
                             renderItem={item => (
                                 <List.Item
                                     actions={[
-                                        <a
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                handleAddRoleModalVisible(true),
-                                                    setStepFormValues(item)
-                                            }}>
-                                            授权
-                                        </a>,
+                                        <Authorized authority="sys:dept:role:update" noMatch=''>
+                                            <a
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    handleAddRoleModalVisible(true),
+                                                        setStepFormValues(item)
+                                                }}>
+                                                授权
+                                        </a>
+                                        </Authorized>,
                                         <MoreBtn key="more" item={item} />,
                                     ]}>
                                     <List.Item.Meta
@@ -198,6 +225,24 @@ export const DeptTable = props => {
                     values={stepFormValues}
                 />
             ) : null}
+            <CreateForm
+                onSubmit={async value => {
+                    const success = await handleAdd(value);
+                    if (success) {
+                        handleCreateFormModalVisible(false);
+                        setStepFormValues({});
+                        if (actionRef.current) {
+                            const aaref = findDOMNode(actionRef.current)
+                            setTimeout(() => aaref.blur(), 0);
+                        }
+                    }
+                }}
+                onCancel={() => {
+                    handleCreateFormModalVisible(false),
+                        setStepFormValues({})
+                }}
+                modalVisible={createFormModalVisible}
+            />
 
         </div>
     );

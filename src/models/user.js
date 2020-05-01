@@ -28,7 +28,7 @@ const UserModel = {
     },
 
     *getUserRoles({ payload }, { call, put }) {
-      const response = yield call(getDeptRoles, payload);
+      const response = yield call(getUserRoles, payload);
       yield put({
         type: 'saveUserRole',
         payload: response,
