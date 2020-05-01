@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Col, Dropdown, Input, List, Menu, Modal, Radio, Row, Tag, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { connect } from 'umi';
+import { connect, Link } from 'umi';
 import moment from 'moment';
 import styles from './style.less';
 import CreateForm from './components/CreateForm';
@@ -70,7 +70,7 @@ export const DeptTable = props => {
     };
 
     const editAndDelete = (key, currentItem) => {
-        if (key === 'edit') console.log(currentItem);
+        if (key === 'edit') ''
         else if (key === 'delete') {
             Modal.confirm({
                 title: '删除任务',
@@ -95,8 +95,16 @@ export const DeptTable = props => {
         <Dropdown
             overlay={
                 <Menu onClick={({ key }) => editAndDelete(key, item)}>
-                    <Menu.Item key="edit">编辑</Menu.Item>
-                    <Menu.Item key="delete">删除</Menu.Item>
+                    <Menu.Item key="edit">
+                        <Authorized authority="sys:dept:list" noMatch=''>
+                            <Link to={`/org/dept/${item.id}`} >详情</Link>
+                        </Authorized>
+                    </Menu.Item>
+                    <Menu.Item key="delete">
+                        <Authorized authority="sys:dept:delete" noMatch=''>
+                            删除
+                        </Authorized>
+                    </Menu.Item>
                 </Menu>
             } >
             <a>

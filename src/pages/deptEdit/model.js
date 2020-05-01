@@ -1,5 +1,5 @@
 import { queryCurrent } from '@/services/user';
-import { getDeptUsers, getDeptPermissions, getDeptInfo } from './service'
+import { getDeptUsers, getDeptPermissions, getDeptInfo, getExtUser } from './service'
 
 const DeptEdit = {
     namespace: 'deptEdit',
@@ -8,6 +8,7 @@ const DeptEdit = {
         deptUsers: [],
         deptPermissions: [],
         deptInfo: [],
+        extUser: [],
     },
     effects: {
         *init({ payload }, { put }) {
@@ -66,6 +67,20 @@ const DeptEdit = {
                 },
             });
         },
+        *getExtUser(_, { call, put }) {
+            const response = yield call(getExtUser);
+            yield put({
+                type: 'save',
+                payload: {
+                    extUser: response.data,
+                },
+            });
+        },
+        *clearExtUser(_, { put }) {
+            yield put({
+                type: 'clearExtUser',
+            });
+        },
 
 
     },
@@ -80,6 +95,13 @@ const DeptEdit = {
                 currentUser: undefined,
                 deptUsers: [],
                 deptPermissions: [],
+                deptInfo: [],
+                extUser: [],
+            };
+        },
+        clearExtUser() {
+            return {
+                extUser: [],
             };
         },
     },
