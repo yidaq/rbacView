@@ -32,11 +32,18 @@ export async function getUserByKey(params) {
         data: { key: params.key }
     });
 }
-//获取部门角色
+//添加部门
 export async function addDept(params) {
     return request('/api/dept?', {
         method: 'POST',
         data: { ...params }
+    });
+}
+
+//删除部门
+export async function deleteDept(params) {
+    return request('/api/dept?id=' + `${params}`, {
+        method: 'delete',
     });
 }
 

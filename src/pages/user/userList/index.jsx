@@ -37,32 +37,7 @@ const handleAdd = async fields => {
         return false;
     }
 };
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async fields => {
-    const hide = message.loading('正在配置');
-    try {
-        await updateUser({
-            id: fields.id,
-            username: fields.username,
-            password: fields.password,
-            phone: fields.phone,
-            nickName: fields.nickName,
-            email: fields.email,
-            status: fields.switch === true ? 1 : 2,
-            deptId: fields.deptId
-        });
-        hide();
-        message.success('配置成功');
-        return true;
-    } catch (error) {
-        hide();
-        message.error('配置失败请重试！');
-        return false;
-    }
-};
+
 /**
  *  删除节点
  * @param selectedRows
@@ -104,6 +79,7 @@ const userList = () => {
     const [updateModalVisible, handleUpdateModalVisible] = useState(false);
     const [stepFormValues, setStepFormValues] = useState({});
     const [addRoleModalVisible, handleAddRoleModalVisible] = useState(false);
+    const [avatar, setAvatar] = useState(undefined)
     const actionRef = useRef();
     const columns = [
         {
@@ -176,6 +152,7 @@ const userList = () => {
                         <a
                             onClick={() => {
                                 handleUpdateModalVisible(true);
+                                setAvatar(record.avatar);
                                 setStepFormValues(record);
                             }}>
                             修改
@@ -192,6 +169,33 @@ const userList = () => {
             ),
         },
     ];
+    /**
+     * 更新节点
+     * @param fields
+     */
+    const handleUpdate = async fields => {
+        const hide = message.loading('正在配置');
+        try {
+            await updateUser({
+                id: fields.id,
+                username: fields.username,
+                password: fields.password,
+                phone: fields.phone,
+                nickName: fields.nickName,
+                email: fields.email,
+                status: fields.switch === true ? 1 : 2,
+                deptId: fields.deptId,
+                avatar: avatar,
+            });
+            hide();
+            message.success('配置成功');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('配置失败请重试！');
+            return false;
+        }
+    };
     return (
         <PageHeaderWrapper>
             <ProTable

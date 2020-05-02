@@ -7,7 +7,7 @@ import { SmileOutlined } from '@ant-design/icons';
 import CreateForm from './components/CreateForm'
 import AddRoleForm from './components/AddRoleForm'
 import { connect } from 'umi';
-import { setDeptUser } from './service';
+import { setDeptUser, deleteDeptUser } from './service';
 
 const PageHeaderContent = ({ currentUser, deptInfo }) => {
     const loading = currentUser && Object.keys(currentUser).length && deptInfo && Object.keys(deptInfo).length;
@@ -34,12 +34,13 @@ const PageHeaderContent = ({ currentUser, deptInfo }) => {
 };
 
 
+
+
 const DeptEdit = props => {
     const deptId = props.match.params.id
     const { dispatch, currentUser, deptUsers, deptPermissions, deptInfo,
         deptUsersLoading, currentUserLoading, deptPermissionsLoading } = props
     const [createFormModalVisible, handleCreateFormModalVisible] = useState(false);
-    const ref = useRef()
     const columns = [
         {
             width: 72,
@@ -82,21 +83,16 @@ const DeptEdit = props => {
                 valueType: 'option',
                 render: (_, record) => (
                     <>
-                        <Authorized authority="sys:dept:update" noMatch=''>
-                            <a
-                                onClick={() => {
-                                    handleAddRoleModalVisible(true)
-                                    setStepFormValues(record)
-                                }}
-                            >授权</a>
-                        </Authorized>
+                        <a
+                            onClick={() => {
+                                handleAddRoleModalVisible(true)
+                                setStepFormValues(record)
+                            }}
+                        >授权</a>
                         <Divider type="vertical" />
-                        <Authorized authority="sys:dept:update" noMatch=''>
-                            <a onClick={() => {
-                                handleRemove([{ id: record.id }]),
-                                    actionRef.current.reload()
-                            }}>踢出部门</a>
-                        </Authorized>
+                        <a onClick={() => {
+                            handleRemove(record.id)
+                        }}>踢出部门</a>
                     </>
                 ),
             } :
@@ -118,14 +114,15 @@ const DeptEdit = props => {
                         <Divider type="vertical" />
                         <Authorized authority="sys:dept:update" noMatch=''>
                             <a onClick={() => {
-                                handleRemove([{ id: record.id }]),
-                                    actionRef.current.reload()
+                                handleRemove(record.id)
+                                // ref.current.reload()
                             }}>踢出部门</a>
                         </Authorized>
                     </>
                 ),
             }
     ];
+
     useEffect(() => {
         if (dispatch) {
             dispatch({
@@ -134,14 +131,50 @@ const DeptEdit = props => {
             });
         }
     }, [])
+    const NewButton = ({ currentUser, deptInfo }) => {
+        const loading = currentUser && Object.keys(currentUser).length && deptInfo && Object.keys(deptInfo).length;
+        if (!loading) {
+            return (
+                <Skeleton avatar paragraph={{ rows: 1, }} active />
+            );
+        } else if (currentUser.deptId === deptInfo.id) {
+            return (
+                <div className={styles.title}>部门成员
+                    <Button
+                        type='primary'
+                        style={{ float: 'right' }}
+                        onClick={() => handleCreateFormModalVisible(true)}>
+                        添加成员
+                        </Button>
+                </div>)
+        } else {
+            return (
+                <div className={styles.title}>部门成员
+                    <Authorized authority="sys:dept:add" noMatch=''>
+                        <Button
+                            type='primary'
+                            style={{ float: 'right' }}
+                            onClick={() => handleCreateFormModalVisible(true)}>
+                            添加成员
+                        </Button>
+                    </Authorized>
+                </div>)
+        }
+
+    }
     const handleAdd = async fields => {
-        console.log(fields)
         const hide = message.loading('正在添加');
         try {
             await setDeptUser({
                 userId: fields.managerId,
                 deptId: deptId,
             });
+            if (dispatch) {
+                dispatch({
+                    type: 'deptEdit/init',
+                    payload: { deptId: props.match.params.id }
+                });
+            }
             hide();
             message.success('添加成功');
             return true;
@@ -151,21 +184,35 @@ const DeptEdit = props => {
             return false;
         }
     };
+    const handleRemove = async (id) => {
+        const hide = message.loading('正在配置');
+        try {
+            await deleteDeptUser({
+                userId: id,
+                deptId: deptId,
+            });
+            hide();
+            message.success('配置成功');
+            if (dispatch) {
+                dispatch({
+                    type: 'deptEdit/init',
+                    payload: { deptId: props.match.params.id }
+                });
+            }
+            return true;
+        } catch (error) {
+            hide();
+            message.error('配置失败请重试');
+            return false;
+        }
+    }
     return (
         <PageHeaderWrapper title=' '
             content={<PageHeaderContent currentUser={currentUser} deptInfo={deptInfo} />}
         >
-            <Card bordered={false}>
-                <div className={styles.title}>部门成员
-                     <Button
-                        type='primary'
-                        style={{ float: 'right' }}
-                        onClick={() => handleCreateFormModalVisible(true)}>
-                        添加成员
-                    </Button>
-                </div>
+            <Card bordered={false} >
+                <NewButton currentUser={currentUser} deptInfo={deptInfo} />
                 <Table
-                    action={ref}
                     style={{
                         marginBottom: 24,
                     }}
@@ -175,15 +222,13 @@ const DeptEdit = props => {
                     columns={columns}
                     rowKey="id"
                 />
+                <Button type='ghost' style={{ float: 'right' }} onClick={() => { props.history.push('/org/dept') }} >返回</Button>
             </Card>
             <CreateForm
                 onSubmit={async value => {
                     const success = await handleAdd(value);
                     if (success) {
                         handleCreateFormModalVisible(false);
-                        if (ref.current) {
-                            ref.current.reload()
-                        }
                     }
                 }}
                 onCancel={() => {

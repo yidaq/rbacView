@@ -11,7 +11,7 @@ import AddRoleForm from './components/AddRoleForm';
 import { updateDeptRoles } from '@/services/dept'
 import { findDOMNode } from 'react-dom';
 import Authorized from '@/utils/Authorized';
-import { addDept } from '@/services/dept'
+import { addDept, deleteDept } from '@/services/dept'
 
 const { Search } = Input;
 
@@ -57,9 +57,11 @@ export const DeptTable = props => {
 
 
     useEffect(() => {
-        dispatch({
-            type: 'dept/getDeptTable'
-        });
+        if (dispatch) {
+            dispatch({
+                type: 'dept/getDeptTable'
+            });
+        }
     }, [1]);
 
     const paginationProps = {
@@ -73,14 +75,31 @@ export const DeptTable = props => {
         if (key === 'edit') ''
         else if (key === 'delete') {
             Modal.confirm({
-                title: '删除任务',
-                content: '确定删除该任务吗？',
+                title: '删除部门',
+                content: '确定删除该部门',
                 okText: '确认',
                 cancelText: '取消',
                 onOk: () => deleteItem(currentItem.id),
             });
         }
     };
+
+    const deleteItem = async (id) => {
+        await deleteDept(id).then(data => {
+            if (data !== undefined) {
+                if (data.code === 0) {
+                    message.success('删除成功')
+                } else {
+                    message.warning(data.msg)
+                }
+            }
+        })
+        if (dispatch) {
+            dispatch({
+                type: 'dept/getDeptTable'
+            });
+        }
+    }
 
     const extraContent = (
         <div className={styles.extraContent}>
@@ -97,7 +116,7 @@ export const DeptTable = props => {
                 <Menu onClick={({ key }) => editAndDelete(key, item)}>
                     <Menu.Item key="edit">
                         <Authorized authority="sys:dept:list" noMatch=''>
-                            <Link to={`/org/dept/${item.id}`} >详情</Link>
+                            <Link to={`/org/deptEidt/${item.id}`} >详情</Link>
                         </Authorized>
                     </Menu.Item>
                     <Menu.Item key="delete">

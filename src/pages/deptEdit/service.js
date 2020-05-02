@@ -29,3 +29,10 @@ export async function setDeptUser(params) {
         data: params
     });
 }
+//新增部门成员
+export async function deleteDeptUser(params) {
+    return request('/api/dept/deptUsers', {
+        method: 'DELETE',
+        data: params
+    });
+}

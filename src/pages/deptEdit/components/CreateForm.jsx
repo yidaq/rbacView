@@ -44,7 +44,7 @@ const CreateForm = props => {
         {...formLayout}
       >
         <Form.Item
-          label="搜索用户"
+          label="选择用户"
           name="managerId"
           hasFeedback
           rules={[{ required: true, message: '用户不能为空!' }]}
@@ -53,7 +53,7 @@ const CreateForm = props => {
             allowClear
             mode="multiple"
             loading={loading}
-            placeholder="若想获取所有请删除输入"
+            placeholder="此处仅显示无部门用户"
             style={{ width: '100%' }}
           >
             {extUser.map(d => (

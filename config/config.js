@@ -81,7 +81,7 @@ export default defineConfig({
                   component: './dept'
                 },
                 {
-                  path: '/org/dept/:id?',
+                  path: '/org/deptEidt/:id?',
                   component: './deptEdit'
                 },
                 {
