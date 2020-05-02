@@ -53,6 +53,18 @@ const DeptEdit = props => {
             align: 'center',
         },
         {
+            title: '职位',
+            dataIndex: 'deptId',
+            align: 'center',
+            render: (_, record) => (
+                <>
+                    {
+                        record.deptId === deptId ? <span>部门经理</span> : <span>部门成员</span>
+                    }
+                </>
+            )
+        },
+        {
             title: '账号',
             dataIndex: 'username',
             align: 'center',
