@@ -83,7 +83,7 @@ const MenuFrom = (props) => {
                     value={value}
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                     treeData={props.permission.menuTree || []}
-                    placeholder="请选择所属菜单"
+                    placeholder="请选择所属目录"
                     treeDefaultExpandAll
                     onChange={onChange}
                 />
@@ -101,6 +101,7 @@ const MenuFrom = (props) => {
                 label="授权标识"
                 name="perms"
                 hasFeedback
+                rules={[{ required: true, message: '授权标识不能为空!' }]}
             >
                 <Input allowClear placeholder="请输入授权标识,如果 sys:user:list" />
             </Form.Item>

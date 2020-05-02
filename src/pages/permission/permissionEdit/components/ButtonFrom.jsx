@@ -60,13 +60,13 @@ const ButtonFrom = (props) => {
             size={"middle"}
         >
             <Form.Item
-                label="菜单名称"
+                label="按钮名称"
                 name="name"
                 defaultValue=""
                 hasFeedback
-                rules={[{ required: true, message: '目录名称不能为空!' }]}
+                rules={[{ required: true, message: '按钮名称不能为空!' }]}
             >
-                <Input allowClear placeholder="请输入目录名称" />
+                <Input allowClear placeholder="请输入按钮名称" />
             </Form.Item>
 
             <Form.Item

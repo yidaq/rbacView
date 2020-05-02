@@ -58,10 +58,19 @@ function MuluFrom(props) {
             </Form.Item>
 
             <Form.Item
-                label="所属菜单"
+                label="所属目录"
                 name="pid"
             >
-                <Input disabled={true} placeholder='默认顶级菜单' />
+                <Input disabled={true} placeholder='默认顶级目录' />
+            </Form.Item>
+
+            <Form.Item
+                label="授权标识"
+                name="perms"
+                hasFeedback
+                rules={[{ required: true, message: '授权标识不能为空!' }]}
+            >
+                <Input allowClear placeholder="请输入授权标识,如果 sys:user:list" />
             </Form.Item>
 
             <Form.Item
