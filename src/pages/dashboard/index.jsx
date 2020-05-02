@@ -109,7 +109,7 @@ const DashBoard = props => {
                             <Row gutter={48}>
                                 {deptInfo.map(item => (
                                     <Col span={12} key={item.id}>
-                                        <Link to=''>
+                                        <Link to={`/org/deptEidt/${item.id}`}>
                                             <Avatar src={item.avatar} size="small" />
                                             <span className={styles.member}>{item.name}</span>
                                         </Link>

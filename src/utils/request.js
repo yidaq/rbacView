@@ -133,18 +133,23 @@ request.interceptors.response.use(async (response, options) => {
           return;
           //刷新成功重新请求
           // sessionStorage.setItem('access_token', data.data)
-          // request(response.url.substring(response.url.indexOf('/api'), response.url.length), {
-          //   method: options.method,
-          //   data: options.data
-          // })
-          // request('/api/user/permissions').then(data => {
-          //   if (data !== undefined) {
-          //     if (data.code === 0) {
-          //       localStorage.setItem('antd-pro-authority', JSON.stringify(data.data))
+          // setTimeout(
+          //   request(response.url.substring(response.url.indexOf('/api'), response.url.length), {
+          //     method: options.method,
+          //     data: options.data
+          //   })
+          //   , 5000)
+          // setTimeout(
+          //   request('/api/user/permissions').then(data => {
+          //     if (data !== undefined) {
+          //       if (data.code === 0) {
+          //         localStorage.setItem('antd-pro-authority', JSON.stringify(data.data))
+          //       }
           //     }
-          //   }
-          // })
-          //被修改权限用户刷新页面
+          //   })
+          //   , 5000)
+
+          // //被修改权限用户刷新页面
           // window.location.reload(true)
         } else {
           request('/api/user/logout')
