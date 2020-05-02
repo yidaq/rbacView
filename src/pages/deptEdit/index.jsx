@@ -44,6 +44,10 @@ const DeptEdit = props => {
     const [addRoleModalVisible, handleAddRoleModalVisible] = useState(false);
     const [stepFormValues, setStepFormValues] = useState({});
 
+    if (deptId === 'null') {
+        return (<div>你还没有部门哦</div>)
+    }
+
     const columns = [
         {
             width: 72,

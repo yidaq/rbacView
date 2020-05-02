@@ -116,7 +116,7 @@ export const DeptTable = props => {
                 <Menu onClick={({ key }) => editAndDelete(key, item)}>
                     <Menu.Item key="edit">
                         <Authorized authority="sys:dept:list" noMatch=''>
-                            <Link to={`/org/deptEidt/${item.id}`} >详情</Link>
+                            <Link to={`/account/deptEidt/${item.id}`} >详情</Link>
                         </Authorized>
                     </Menu.Item>
                     <Menu.Item key="delete">
