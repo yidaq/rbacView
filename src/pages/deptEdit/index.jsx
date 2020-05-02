@@ -41,6 +41,9 @@ const DeptEdit = props => {
     const { dispatch, currentUser, deptUsers, deptPermissions, deptInfo,
         deptUsersLoading, currentUserLoading, deptPermissionsLoading } = props
     const [createFormModalVisible, handleCreateFormModalVisible] = useState(false);
+    const [addRoleModalVisible, handleAddRoleModalVisible] = useState(false);
+    const [stepFormValues, setStepFormValues] = useState({});
+
     const columns = [
         {
             width: 72,
@@ -248,7 +251,28 @@ const DeptEdit = props => {
                 }}
                 modalVisible={createFormModalVisible}
             />
-
+            {stepFormValues && Object.keys(stepFormValues).length ? (
+                <AddRoleForm
+                    onSubmit={async value => {
+                        const success = await addRoles(value);
+                        if (success) {
+                            handleAddRoleModalVisible(false);
+                            setStepFormValues({});
+                            console.log()
+                            if (actionRef.current) {
+                                const aaref = findDOMNode(actionRef.current)
+                                setTimeout(() => aaref.blur(), 0);
+                            }
+                        }
+                    }}
+                    onCancel={() => {
+                        handleAddRoleModalVisible(false),
+                            setStepFormValues({})
+                    }}
+                    modalVisible={addRoleModalVisible}
+                    values={stepFormValues}
+                />
+            ) : null}
         </PageHeaderWrapper>
     )
 }

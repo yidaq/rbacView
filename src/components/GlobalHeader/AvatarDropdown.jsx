@@ -20,8 +20,12 @@ class AvatarDropdown extends React.Component {
 
       return;
     }
-
-    history.push(`/org/${key}`);
+    if (key === 'account') {
+      history.push(`/org/${key}`);
+    }
+    if (key === 'settings') {
+      history.push(`/org/deptEidt/${this.props.currentUser.deptId}`);
+    }
   };
 
   render() {
@@ -38,12 +42,11 @@ class AvatarDropdown extends React.Component {
           <UserOutlined />
             个人中心
           </Menu.Item>
-        {menu && (
-          <Menu.Item key="settings">
-            <SettingOutlined />
-            个人设置
+
+        <Menu.Item key="settings">
+          <SettingOutlined />
+            我的部门
           </Menu.Item>
-        )}
         {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
