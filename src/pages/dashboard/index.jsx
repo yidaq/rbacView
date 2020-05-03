@@ -31,19 +31,7 @@ const PageHeaderContent = ({ currentUser }) => {
         </div>
     );
 };
-const ExtraContent = () => (
-    <div className={styles.extraContent}>
-        <div className={styles.statItem}>
-            <Statistic title="项目数" value={56} />
-        </div>
-        <div className={styles.statItem}>
-            <Statistic title="团队内排名" value={8} suffix="/ 24" />
-        </div>
-        <div className={styles.statItem}>
-            <Statistic title="项目访问" value={2223} />
-        </div>
-    </div>
-);
+
 const DashBoard = props => {
     const { dispatch, currentUser, loginUsers, loginUsersLoading, currentUserLoading, deptInfo, deptInfoLoading } = props;
     useEffect(() => {
@@ -53,6 +41,16 @@ const DashBoard = props => {
             });
         }
     }, [])
+    const ExtraContent = () => (
+        <div className={styles.extraContent}>
+            <div className={styles.statItem}>
+                <Statistic title="当前在线人数" value={loginUsers.length} suffix="/5" />
+            </div>
+            <div className={styles.statItem}>
+                <Statistic title="团队总数" value={deptInfo.length} />
+            </div>
+        </div>
+    );
     return (
         <PageHeaderWrapper title=' ' content={<PageHeaderContent currentUser={currentUser} />} extraContent={<ExtraContent />}>
             <Row gutter={24}>
@@ -109,7 +107,7 @@ const DashBoard = props => {
                             <Row gutter={48}>
                                 {deptInfo.map(item => (
                                     <Col span={12} key={item.id}>
-                                        <Link to={`/org/deptEidt/${item.id}`}>
+                                        <Link to={`/account/deptEidt/${item.id}`}>
                                             <Avatar src={item.avatar} size="small" />
                                             <span className={styles.member}>{item.name}</span>
                                         </Link>

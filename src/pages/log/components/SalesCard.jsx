@@ -10,10 +10,10 @@ const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 const rankingListData = [];
 
-for (let i = 0; i < 7; i += 1) {
+for (let i = 0; i < 2; i += 1) {
   rankingListData.push({
-    title: '用户' + i,
-    total: 323234,
+    title: '一只小程序员' + i,
+    total: 3023,
   });
 }
 
