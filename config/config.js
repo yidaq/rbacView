@@ -119,6 +119,11 @@ export default defineConfig({
                   component: './log',
                 },
                 {
+                  path: '/sys/sql',
+                  name: 'sys-durid',
+                  component: './durid'
+                },
+                {
                   component: './404',
                 }
               ],

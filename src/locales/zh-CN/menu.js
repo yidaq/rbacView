@@ -67,5 +67,6 @@ export default {
   'menu.sys': '系统管理',
   'menu.sys.sys-swagger': '接口管理',
   'menu.sys.sys-log': '日志管理',
+  'menu.sys.sys-durid': '数据管理',
 
 };
