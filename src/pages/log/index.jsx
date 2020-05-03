@@ -1,5 +1,5 @@
-import { EllipsisOutlined, DownOutlined } from '@ant-design/icons';
-import { Col, Dropdown, Menu, Row, Button, message } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Button, message, BackTop } from 'antd';
 import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { connect } from 'umi';
@@ -28,7 +28,6 @@ const handleRemove = async selectedRows => {
 
 const Log = props => {
     const { loading, dispatch, chart } = props
-    const [stepFormValues, setStepFormValues] = useState({});
     const actionRef = useRef();
     const columns = [
         {
@@ -102,16 +101,14 @@ const Log = props => {
     }, [])
     return (
         <GridContent>
+            <BackTop />
             <React.Fragment>
                 <Suspense fallback={<PageLoading />}>
                 </Suspense>
                 <Suspense fallback={null}>
                     <SalesCard
-                        // rangePickerValue={rangePickerValue}
                         salesData={chart}
-                        // handleRangePickerChange={this.handleRangePickerChange}
                         loading={loading}
-                    //   selectDate={this.selectDate}
                     />
                 </Suspense>
 
@@ -161,10 +158,10 @@ const Log = props => {
                             };
                         }}
                     columns={columns}
-                    // search={false}
                     rowSelection={{}}
                 />
             </React.Fragment>
+
         </GridContent>
     )
 }

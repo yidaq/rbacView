@@ -11,7 +11,7 @@ import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getRouteAuthority } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo2.png';
 import { getRouters, getPermissions } from '@/services/routers';
 import * as allIcons from '@ant-design/icons/es';
 
