@@ -44,4 +44,10 @@ export async function getDeptOwnPermission(params) {
         data: params
     });
 }
-
+//修改部门成员资源权限
+export async function updateDeptOwnPermission(params) {
+    return request('/api/depts/updatePermission', {
+        method: 'POST',
+        data: params
+    });
+}

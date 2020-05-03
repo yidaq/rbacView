@@ -7,7 +7,7 @@ import { SmileOutlined } from '@ant-design/icons';
 import CreateForm from './components/CreateForm'
 import AddRoleForm from './components/AddRoleForm'
 import { connect } from 'umi';
-import { setDeptUser, deleteDeptUser } from './service';
+import { setDeptUser, deleteDeptUser, updateDeptOwnPermission } from './service';
 
 const PageHeaderContent = ({ currentUser, deptInfo }) => {
     const loading = currentUser && Object.keys(currentUser).length && deptInfo && Object.keys(deptInfo).length;
@@ -226,18 +226,17 @@ const DeptEdit = props => {
         }
     }
     const addRoles = async fields => {
-        console.log(fields)
-        // const hide = message.loading('正在配置');
-        // try {
-        //     await updateDeptRoles({ deptId: fields.id, roleIds: fields.roleIds });
-        //     hide();
-        //     message.success('配置成功');
-        //     return true;
-        // } catch (error) {
-        //     hide();
-        //     message.error('配置失败请重试！');
-        //     return false;
-        // }
+        const hide = message.loading('正在配置');
+        try {
+            await updateDeptOwnPermission({ userId: fields.id, deptId: deptId, permissionId: fields.permissionIds });
+            hide();
+            message.success('配置成功');
+            return true;
+        } catch (error) {
+            hide();
+            message.error('配置失败请重试！');
+            return false;
+        }
     }
 
     return (
