@@ -4,12 +4,8 @@ import { connect } from 'umi'
 
 
 const AddRoleForm = props => {
-    const { dispatch } = props;
+    const { dispatch, allPermissions, ownPermissions, deptId } = props;
     const { modalVisible, onSubmit: addRoles, onCancel, values } = props;
-    const [allRole, setAllRole] = useState([])
-    const [ownRoles, setOwnRoles] = useState([])
-
-
     const okHandle = () => {
         addRoles({ roleIds: props.ownRoles, id: values.id });
     };
@@ -17,8 +13,8 @@ const AddRoleForm = props => {
     useEffect(() => {
         if (dispatch) {
             dispatch({
-                type: 'user/getdDeptRoles',
-                payload: { id: values.id }
+                type: 'deptPermission/getDeptOwnPermissions',
+                payload: { deptId: deptId, userId: values.id }
             });
         }
     }, [])
@@ -26,16 +22,16 @@ const AddRoleForm = props => {
     const handleChange = (targetKeys, direction, moveKeys) => {
         if (direction === 'right') {
             dispatch({
-                type: 'user/changeUserRoles',
+                type: 'deptPermission/changeDeptOwnPermissions',
                 payload: {
-                    allRole: props.allRole,
-                    ownRoles: [...targetKeys]
+                    allPermissions: allPermissions,
+                    ownPermissions: [...targetKeys]
                 }
             });
         } else {
             for (var i = 0; i < moveKeys.length; i++) {
                 dispatch({
-                    type: 'user/deleteUserRoles',
+                    type: 'deptPermission/deleteDeptOwnPermissions',
                     payload: {
                         moveKeys: moveKeys[i],
                     }
@@ -48,15 +44,15 @@ const AddRoleForm = props => {
     return (
         <Modal
             destroyOnClose
-            title="赋予角色"
+            title="部门资源授权"
             visible={modalVisible}
             onOk={okHandle}
             onCancel={() => onCancel()}
         >
             <Transfer
-                dataSource={props.allRole}
-                targetKeys={props.ownRoles}
-                titles={['角色列表', '赋予角色']}
+                dataSource={allPermissions}
+                targetKeys={ownPermissions}
+                titles={['资源列表', '已有资源']}
                 onChange={handleChange}
                 render={item => item.title}
             />
@@ -64,7 +60,7 @@ const AddRoleForm = props => {
     )
 }
 
-export default connect(({ user }) => ({
-    ownRoles: user.ownRoles,
-    allRole: user.allRole,
+export default connect(({ deptPermission }) => ({
+    allPermissions: deptPermission.allPermissions,
+    ownPermissions: deptPermission.ownPermissions,
 }))(AddRoleForm);

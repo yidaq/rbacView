@@ -273,6 +273,7 @@ const DeptEdit = props => {
                         handleAddRoleModalVisible(false),
                             setStepFormValues({})
                     }}
+                    deptId={deptId}
                     modalVisible={addRoleModalVisible}
                     values={stepFormValues}
                 />

@@ -36,3 +36,11 @@ export async function deleteDeptUser(params) {
         data: params
     });
 }
+
+//获取部门自己资源权限和部门成员资源权限
+export async function getDeptOwnPermission(params) {
+    return request('/api/depts/ownPermission', {
+        method: 'POST',
+        data: params
+    });
+}

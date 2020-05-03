@@ -48,7 +48,7 @@ const AddRoleForm = props => {
     return (
         <Modal
             destroyOnClose
-            title="赋予角色"
+            title="部门角色赋予"
             visible={modalVisible}
             onOk={okHandle}
             onCancel={() => onCancel()}
@@ -56,7 +56,7 @@ const AddRoleForm = props => {
             <Transfer
                 dataSource={props.allRole}
                 targetKeys={props.ownRoles}
-                titles={['角色列表', '赋予角色']}
+                titles={['角色列表', '已有角色']}
                 onChange={handleChange}
                 render={item => item.title}
             />
