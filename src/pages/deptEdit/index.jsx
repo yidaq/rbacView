@@ -225,6 +225,21 @@ const DeptEdit = props => {
             return false;
         }
     }
+    const addRoles = async fields => {
+        console.log(fields)
+        // const hide = message.loading('正在配置');
+        // try {
+        //     await updateDeptRoles({ deptId: fields.id, roleIds: fields.roleIds });
+        //     hide();
+        //     message.success('配置成功');
+        //     return true;
+        // } catch (error) {
+        //     hide();
+        //     message.error('配置失败请重试！');
+        //     return false;
+        // }
+    }
+
     return (
         <PageHeaderWrapper title=' '
             content={<PageHeaderContent currentUser={currentUser} deptInfo={deptInfo} />}
@@ -262,11 +277,6 @@ const DeptEdit = props => {
                         if (success) {
                             handleAddRoleModalVisible(false);
                             setStepFormValues({});
-                            console.log()
-                            if (actionRef.current) {
-                                const aaref = findDOMNode(actionRef.current)
-                                setTimeout(() => aaref.blur(), 0);
-                            }
                         }
                     }}
                     onCancel={() => {

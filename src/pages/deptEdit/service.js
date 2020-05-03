@@ -44,3 +44,4 @@ export async function getDeptOwnPermission(params) {
         data: params
     });
 }
+

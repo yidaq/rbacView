@@ -7,7 +7,7 @@ const AddRoleForm = props => {
     const { dispatch, allPermissions, ownPermissions, deptId } = props;
     const { modalVisible, onSubmit: addRoles, onCancel, values } = props;
     const okHandle = () => {
-        addRoles({ roleIds: props.ownRoles, id: values.id });
+        addRoles({ roleIds: ownPermissions, id: values.id });
     };
 
     useEffect(() => {
