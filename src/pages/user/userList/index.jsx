@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -160,10 +160,16 @@ const userList = () => {
                     </Authorized>
                     <Divider type="vertical" />
                     <Authorized authority="sys:user:delete" noMatch=''>
-                        <a onClick={() => {
-                            handleRemove([{ id: record.id }]),
-                                actionRef.current.reload()
-                        }}>删除</a>
+                        <Popconfirm title="确定删除此用户? "
+                            placement="leftTop"
+                            onCancel={() => console.log("用户取消删除")}
+                            onConfirm={() => {
+                                handleRemove([{ id: record.id }]),
+                                    actionRef.current.reload()
+
+                            }}>
+                            <a >删除</a>
+                        </Popconfirm>
                     </Authorized>
                 </>
             ),

@@ -41,7 +41,7 @@ const UpdateForm = props => {
   return (
     <Modal
       destroyOnClose
-      title="赋予角色"
+      title="修改用户"
       visible={updateModalVisible}
       onOk={okHandle}
       onCancel={() => onCancel()}
